@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "declaration": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "strict": true
+  }
+  ,
+  "exclude": [
+    "dist",
+    "node_modules",
+    "testResult"
+  ]
+}

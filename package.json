@@ -1,0 +1,24 @@
+{
+  "name": "typescript-optional",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test",
+    "coveralls": "coveralls < ./coverage/lcov.info",
+    "coverage": "remap-istanbul -i coverage/coverage.json -o html-report -t html"
+  },
+  "author": "bromne",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/mocha": "^2.2.43",
+    "@types/power-assert": "^1.4.29",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.3",
+    "power-assert": "^1.4.4",
+    "remap-istanbul": "^0.9.5",
+    "typescript": "^2.5.3"
+  }
+}
