@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.43",
     "@types/power-assert": "^1.4.29",
+    "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
     "power-assert": "^1.4.4",
