@@ -2,6 +2,10 @@
   "name": "typescript-optional",
   "version": "1.0.0",
   "description": "Optional (like Java) implementation in TypeScript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bromne/typescript-optional.git"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "scripts": {
