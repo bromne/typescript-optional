@@ -1,10 +1,11 @@
 {
   "name": "typescript-optional",
-  "version": "0.2.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Optional (like Java) implementation in TypeScript",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "scripts": {
+    "prepublish": "npm run build-test",
     "build": "tsc",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test",
     "coverage": "remap-istanbul -i coverage/coverage.json -o testResult/lcov.info -t lcovonly",
