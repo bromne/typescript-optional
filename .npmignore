@@ -2,7 +2,7 @@ lib/
 test/
 node_modules/
 coverage/
-html-report/
+testResult/
 dist/test/
 
 .gitignore

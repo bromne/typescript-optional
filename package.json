@@ -7,8 +7,8 @@
   "scripts": {
     "build": "tsc",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test",
-    "coverage": "remap-istanbul -i coverage/coverage.json -o html-report -t html",
-    "coveralls": "coveralls < ./coverage/lcov.info",
+    "coverage": "remap-istanbul -i coverage/coverage.json -o testResult/lcov.info -t lcovonly",
+    "coveralls": "coveralls < testResult/lcov.info",
     "build-test": "npm run build && npm run test && npm run coverage"
   },
   "author": "bromne",

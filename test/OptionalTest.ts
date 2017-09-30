@@ -95,27 +95,35 @@ describe("Optional", () => {
         });
     });
     
-    describe.skip("#filter", () => {
+    describe("#filter", () => {
         it("returns a present optional when it is present and the predicate returns true.", () => {
-
+            let actual = sutPresent.filter(value => value.length > 0);
+            assert.equal(actual.get(), payload);
         });
 
         it("returns an empty optional when it is present and the predicate returns false.", () => {
-            
+            let actual = sutPresent.filter(value => value.length === 0);
+            assert(actual.isEmpty);
         });
 
         it("returns an empty optional when it is empty.", () => {
-            
+            let actual = sutEmpty.filter(value => true);
+            assert(actual.isEmpty);
         });
     });
 
-    describe.skip("#map", () => {
-        it("returns a present optional whose payload is mapped by the given function when it is present.", () => {
+    describe("#map", () => {
+        let mapper = (value: string) => value.length;
 
+        it("returns a present optional whose payload is mapped by the given function when it is present.", () => {
+            let actual = sutPresent.map(mapper).get();
+            let expected = mapper(payload);
+            assert.equal(actual, expected);
         });
 
         it("return an empty optional when it is empty.", () => {
-            
+            let actual = sutEmpty.map(mapper);
+            assert(actual.isEmpty);
         });
     });
 
@@ -174,81 +182,42 @@ describe("Optional", () => {
         }
     });
 
-    describe.skip("#orElse", () => {
+    describe("#orElse", () => {
+        let another = "bar";
+
         it("returns the original payload when it is present.", () => {
-            
+            let actual = sutPresent.orElse(another);
+            assert.equal(actual, sutPresent.get());
         });
 
         it("returns the given value when it is empty.", () => {
-            
-        });
-
-        it("throws an exception when it is present and receives null.", () => {
-            
-        });
-
-        it("throws an exception when it is present and receives undefined.", () => {
-            
-        });
-
-        it("throws an exception when it is empty and receives null.", () => {
-            
-        });
-
-        it("throws an exception when it is empty and receives undefined.", () => {
-            
+            let actual = sutEmpty.orElse(another);
+            assert.equal(actual, another);
         });
     });
 
-    describe.skip("#orElseGet", () => {
+    describe("#orElseGet", () => {
+        let another = "bar";
+
         it("returns the original payload when it is present.", () => {
-            
+            let actual = sutPresent.orElseGet(() => another);
+            assert.equal(actual, sutPresent.get());
         });
 
         it("returns the value returned by the given function when it is empty.", () => {
-            
-        });
-
-        it("throws an exception when it is present and the given function returns null.", () => {
-            
-        });
-
-        it("throws an exception when it is present and the given function returns undefined.", () => {
-            
-        });
-
-        it("throws an exception when it is empty and the given function returns null.", () => {
-            
-        });
-
-        it("throws an exception when it is empty and the given function returns undefined.", () => {
-            
+            let actual = sutEmpty.orElseGet(() => another);
+            assert.equal(actual, another);
         });
     });
 
-    describe.skip("#orElseThrow", () => {
+    describe("#orElseThrow", () => {
         it("returns the original payload when it is present.", () => {
-            
+            let actual = sutPresent.orElseThrow(TypeError);
+            assert.equal(actual, sutPresent.get());
         });
 
         it("throw the exception returned by the given function when it is empty.", () => {
-            
-        });
-
-        it("throws an exception when it is present and the given function returns null.", () => {
-            
-        });
-
-        it("throws an exception when it is present and the given function returns undefined.", () => {
-            
-        });
-
-        it("throws an exception when it is empty and the given function returns null.", () => {
-            
-        });
-
-        it("throws an exception when it is empty and the given function returns undefined.", () => {
-            
+            assert.throws(() => sutEmpty.orElseThrow(TypeError));
         });
     });
 });
