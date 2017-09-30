@@ -1,14 +1,15 @@
 {
   "name": "typescript-optional",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "scripts": {
     "build": "tsc",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test",
+    "coverage": "remap-istanbul -i coverage/coverage.json -o html-report -t html",
     "coveralls": "coveralls < ./coverage/lcov.info",
-    "coverage": "remap-istanbul -i coverage/coverage.json -o html-report -t html"
+    "build-test": "npm run build && npm run test && npm run coverage"
   },
   "author": "bromne",
   "license": "MIT",

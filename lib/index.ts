@@ -21,16 +21,16 @@ export default abstract class Optional<T> {
     
     abstract orElseThrow<U>(exception: () => U): T;
 
-    static of<T>(value: T | null): Optional<T> {
-        if (value !== null)
-            return new ValueOptional<T>(value);
+    static ofNullable<T>(nullable: T | null): Optional<T> {
+        if (nullable !== null && nullable !== undefined)
+            return new PresentOptional<T>(nullable);
         else
             return new EmptyOptional<T>();
     }
 
-    static ofValue<T>(value: T): Optional<T> {
-        if (value !== null && value !== undefined)
-            return new ValueOptional<T>(value);
+    static ofNonNull<T>(payload: T): Optional<T> {
+        if (payload !== null && payload !== undefined)
+            return new PresentOptional<T>(payload);
         else
             throw new TypeError("The passed value was null or undefined.");
     }
@@ -40,8 +40,8 @@ export default abstract class Optional<T> {
     }
 }
 
-class ValueOptional<T> extends Optional<T> {
-    value: T;
+class PresentOptional<T> extends Optional<T> {
+    payload: T;
 
     get isPresent(): boolean {
         return true;
@@ -49,39 +49,39 @@ class ValueOptional<T> extends Optional<T> {
     
     constructor(value: T)  {
         super();
-        this.value;
+        this.payload = value;
     }
 
     get(): T {
-        return this.value;
+        return this.payload;
     }
 
     ifPresent(consumer: (value: T) => void): void {
-        consumer(this.value);
+        consumer(this.payload);
     }
 
     filter(predicate: (value: T) => boolean): Optional<T> {
-        return (predicate(this.value)) ? this : Optional.empty();
+        return (predicate(this.payload)) ? this : Optional.empty();
     }
 
     map<U>(mapper: (value: T) => U): Optional<U> {
-        return Optional.ofValue(mapper(this.value));
+        return Optional.ofNonNull(mapper(this.payload));
     }
     
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
-        return mapper(this.value);
+        return mapper(this.payload);
     }
 
     orElse(another: T): T {
-        return this.value;
+        return this.payload;
     }
 
     orElseGet(another: () => T): T {
-        return this.value;
+        return this.payload;
     }
 
     orElseThrow<U>(exception: () => U): T {
-        return this.value;
+        return this.payload;
     }
 }
 
@@ -118,7 +118,7 @@ class EmptyOptional<T> extends Optional<T> {
     }
 
     orElseGet(another: () => T): T {
-        return another();
+        return this.orElse(another());
     }
 
     orElseThrow<U>(exception: () => U): T {
