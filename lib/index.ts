@@ -21,7 +21,7 @@ export default abstract class Optional<T> {
     
     abstract orElseThrow<U>(exception: () => U): T;
 
-    static ofNullable<T>(nullable: T | null): Optional<T> {
+    static ofNullable<T>(nullable: T | null | undefined): Optional<T> {
         if (nullable !== null && nullable !== undefined)
             return new PresentOptional<T>(nullable);
         else

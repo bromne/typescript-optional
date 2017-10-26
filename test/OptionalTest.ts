@@ -8,20 +8,23 @@ describe("Optional", () => {
     let sutEmpty: Optional<string> = Optional.empty();
 
     describe("#ofNullable", () => {
+        let getNullable: () => string | null = () => null;
+        let getUndefinedable: () => string | undefined = () => undefined;
+
         it("returns a present optional when it is given a non-null value.", () => {
             let sut = Optional.ofNullable("foo");
             assert(sut.isPresent);
         });
         
         it("returns an empty optional when it receives null.", () => {
-            let sut = Optional.ofNullable<string | null>(null);
+            let sut: Optional<string> = Optional.ofNullable(getNullable());
             assert(sut.isEmpty);
         });
 
         it("returns an empty optional when it receives undefined.", () => {
-            let sut = Optional.ofNullable<string | undefined>(undefined);
+            let sut: Optional<string> = Optional.ofNullable(getUndefinedable());
             assert(sut.isEmpty);
-        }) 
+        });
     });
     
     describe("#ofNonNull", () => {
@@ -31,17 +34,17 @@ describe("Optional", () => {
         });
 
         it("throws an exception when it is given null.", () => {
-            assert.throws(() => Optional.ofNonNull(null))
+            assert.throws(() => Optional.ofNonNull<string | null>(null))
         });
 
         it("throws an exception when it is given undefined.", () => {
-            assert.throws(() => Optional.ofNonNull(undefined))
+            assert.throws(() => Optional.ofNonNull<string | undefined>(undefined))
         });
     });
 
     describe("#empty", () => {
         it("returns an empty optional.", () => {
-            let sut = Optional.empty();
+            let sut: Optional<string> = Optional.empty();
             assert(sut.isEmpty);
         });
     });
