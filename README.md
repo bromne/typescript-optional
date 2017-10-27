@@ -10,7 +10,7 @@ Optional (like Java) implementation in TypeScript
 ## Overview
 
 `Optional<T>` is a type which *may* contain a *payload* of type `T` or *may not* contain.
-It provides the common interface regardless of an instance is *present* or is *empty*. 
+It provides the common interface regardless of whether an instance is *present* or is *empty*. 
 
 This module reffers to [Optional class in Java 8](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html).
 
