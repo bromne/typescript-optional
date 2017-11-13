@@ -7,7 +7,7 @@
     "url": "https://github.com/bromne/typescript-optional.git"
   },
   "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "prepublish": "npm run build-test",
     "build": "tsc",
