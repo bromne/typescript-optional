@@ -128,6 +128,17 @@ describe("Optional", () => {
             let actual = sutEmpty.map(mapper);
             assert(actual.isEmpty);
         });
+
+        it("handle null/undefined mapper return value properly", () => {
+            const payload = {
+                a: "A"
+            };
+            assert.equal(payload.a, Optional.ofNonNull(payload).map(p => p.a).get());
+
+            const fallback = "B";
+            assert.equal(fallback, Optional.ofNonNull(payload as any).map(p => p.b).orElse(fallback));
+            assert.equal(fallback, Optional.ofNonNull(payload).map(p => null as any).orElse(fallback));
+        })
     });
 
     describe("#flatMap", () => {

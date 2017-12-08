@@ -64,8 +64,8 @@ class PresentOptional<T> extends Optional<T> {
         return (predicate(this.payload)) ? this : Optional.empty();
     }
 
-    map<U>(mapper: (value: T) => U): Optional<U> {
-        return Optional.ofNonNull(mapper(this.payload));
+    map<U>(mapper: (value: T) => U | null | undefined): Optional<U> {
+        return Optional.ofNullable(mapper(this.payload));
     }
     
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
