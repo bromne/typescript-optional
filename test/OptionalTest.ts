@@ -97,7 +97,34 @@ describe("Optional", () => {
             assert.equal(called, false);
         });
     });
-    
+
+    describe("#ifPresentOrElse", () => {
+        it("calls the given function when it is present.", () => {
+            let called = false;
+            let calledEmpty = false;
+            sutPresent.ifPresentOrElse(value => {
+                assert.equal(value, payload);
+                called = true;
+            }, () => {
+                calledEmpty = true;
+            });
+            assert.equal(called, true);
+            assert.equal(calledEmpty, false);
+        });
+
+        it("calls the emptyAction function when it is empty.", () => {
+            let called = false;
+            let calledEmpty = false;
+            sutEmpty.ifPresentOrElse(value => {
+                called = true;
+            }, () => {
+                calledEmpty = true;
+            });
+            assert.equal(called, false);
+            assert.equal(calledEmpty, true);
+        });
+    });
+
     describe("#filter", () => {
         it("returns a present optional when it is present and the predicate returns true.", () => {
             let actual = sutPresent.filter(value => value.length > 0);
@@ -183,6 +210,21 @@ describe("Optional", () => {
                 assert(actual.isEmpty);
             });
         }
+    });
+
+    describe("#or", () => {
+        const another = "bar";
+        const supplier = () => Optional.ofNonNull(another);
+
+        it("returns the current optional when it is present.", () => {
+            const actual = sutPresent.or(supplier);
+            assert(actual === sutPresent);
+        });
+
+        it("returns the supplier's value when it is empty.", () => {
+            const actual = sutEmpty.or(supplier);
+            assert.equal(actual.get(), another);
+        });
     });
 
     describe("#orElse", () => {
