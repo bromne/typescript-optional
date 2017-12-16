@@ -8,13 +8,17 @@ export default abstract class Optional<T> {
     abstract get(): T;
     
     abstract ifPresent(consumer: (value: T) => void): void;
+
+    abstract ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void;
     
     abstract filter(predicate: (value: T) => boolean): Optional<T>;
     
     abstract map<U> (mapper: (value: T) => U): Optional<U>;
     
     abstract flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U>;
-    
+
+    abstract or(supplier: () => Optional<T>): Optional<T>;
+
     abstract orElse(another: T): T;
     
     abstract orElseGet(another: () => T): T;
@@ -60,6 +64,10 @@ class PresentOptional<T> extends Optional<T> {
         consumer(this.payload);
     }
 
+    ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void {
+        consumer(this.payload);
+    }
+
     filter(predicate: (value: T) => boolean): Optional<T> {
         return (predicate(this.payload)) ? this : Optional.empty();
     }
@@ -70,6 +78,10 @@ class PresentOptional<T> extends Optional<T> {
     
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
         return mapper(this.payload);
+    }
+
+    or(supplier: () => Optional<T>): Optional<T> {
+        return this;
     }
 
     orElse(another: T): T {
@@ -100,7 +112,11 @@ class EmptyOptional<T> extends Optional<T> {
 
     ifPresent(consumer: (value: T) => void): void {
     }
-    
+
+    ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void {
+        emptyAction();
+    }
+
     filter(predicate: (value: T) => boolean): Optional<T> {
         return this;
     }
@@ -111,6 +127,10 @@ class EmptyOptional<T> extends Optional<T> {
 
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
         return Optional.empty();
+    }
+
+    or(supplier: () => Optional<T>): Optional<T> {
+        return supplier();
     }
 
     orElse(another: T): T {
