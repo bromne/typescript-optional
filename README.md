@@ -12,7 +12,7 @@ Optional (like Java) implementation in TypeScript
 `Optional<T>` is a type which *may* or *may not* contain a *payload* of type `T`.
 It provides a common interface regardless of whether an instance is *present* or is *empty*. 
 
-This module is inspired by [Optional class in Java 8](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html).
+This module is inspired by [Optional class in Java 8+](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html).
 
 ### Install
 
@@ -45,7 +45,7 @@ let optionalEmpty2 = Optional.empty<string>(); // or parameterize explicitly
 ### operations
 
 ```ts
-let optional: Optional<string> = Optional.ofNullable( /* some optional value */ );
+let optional: Optional<string> = Optional.ofNullable( /* some optional value: null | string */ );
 
 // force to retrieve the payload. (or else throws TypeError.)
 // this method is not used match.
@@ -57,8 +57,11 @@ optional.isPresent
 // be whether this is empty or not. (negation of `isPresent` property)
 optional.isEmpty
 
-// if a payload is present, execute the given procedure.
+// execute the given consumer if a payload is present.
 optional.ifPresent(value => console.log(value));
+
+// execute the first argument (consumer) if a payload is present, execute the second argument (emptyAction) otherwise.
+optional.ifPresentOrElse(value => console.log(value), () => console.log("empty"));
 
 // filter a payload with additional predicate.
 optional.filter(value => value.length > 0);
@@ -69,16 +72,20 @@ optional.map(value => value.length);
 // map a payload with the given mapper which returns value wrapped with Optional type.
 let powerIfPositive: (x: Number) => Optional<Number>
     = x => (x > 0) ? Optional.ofNonNull(x * x) : Optional.empty();
+let numberOptional: Optional<number> = Optional.ofNullable(/* some optional value: null | number */)
+numberOptional.flatMap(value => powerIfPositive(value));
 
-optional.flatMap(value => powerIfPositive(value));
+// return this if this is present, return the given another optional otherwise.
+let another: Optional<string> = Optional.ofNullable(/* ... */);
+optional.or(another);
 
-// retrieve a payload if this is present, return the given value or else.
+// retrieve a payload if this is present, return the given value otherwise.
 optional.orElse("bar");
 
-// retrieve a payload if this is present, return a value supplied by the given function or else.
+// retrieve a payload if this is present, return a value supplied by the given function otherwise.
 optional.orElseGet(() => "bar");
 
-// retrieve a payload if this is present, throws an exception supplied by the given function or else.
+// retrieve a payload if this is present, throws an exception supplied by the given function otherwise.
 optional.orElseThrow(() => new Error());
 ```
 
