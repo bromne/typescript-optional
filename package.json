@@ -1,6 +1,6 @@
 {
   "name": "typescript-optional",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Optional (like Java) implementation in TypeScript",
   "repository": {
     "type": "git",
