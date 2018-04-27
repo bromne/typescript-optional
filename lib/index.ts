@@ -33,6 +33,10 @@ export default abstract class Optional<T> {
     }
 
     static ofNonNull<T>(payload: T): Optional<T> {
+        return Optional.of(payload);
+    }
+
+    static of<T>(payload: T): Optional<T> {
         if (payload !== null && payload !== undefined)
             return new PresentOptional<T>(payload);
         else

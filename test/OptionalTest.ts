@@ -27,7 +27,7 @@ describe("Optional", () => {
         });
     });
     
-    describe("#ofNonNull", () => {
+    describe("#of", () => {
         it("returns a present optional when it is given a non-null value.", () => {
             let sut = Optional.ofNonNull("foo");
             assert(sut.isPresent);
@@ -39,6 +39,21 @@ describe("Optional", () => {
 
         it("throws an exception when it is given undefined.", () => {
             assert.throws(() => Optional.ofNonNull<string | undefined>(undefined))
+        });
+    });
+
+    describe("#of", () => {
+        it("returns a present optional when it is given a non-null value.", () => {
+            let sut = Optional.of("foo");
+            assert(sut.isPresent);
+        });
+
+        it("throws an exception when it is given null.", () => {
+            assert.throws(() => Optional.of<string | null>(null))
+        });
+
+        it("throws an exception when it is given undefined.", () => {
+            assert.throws(() => Optional.of<string | undefined>(undefined))
         });
     });
 
