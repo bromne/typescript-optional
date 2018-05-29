@@ -66,7 +66,7 @@ describe("Optional", () => {
 
     describe("#get", () => {
         it("returns the payload when it is present.", () => {
-            assert.equal(sutPresent.get(), payload);
+            assert.strictEqual(sutPresent.get(), payload);
         });
 
         it("throws an exception when it is empty.", () => {
@@ -76,21 +76,21 @@ describe("Optional", () => {
 
     describe("#isPresent", () => {
         it("returns true when it is present", () => {
-            assert.equal(sutPresent.isPresent, true);
+            assert.strictEqual(sutPresent.isPresent, true);
         });
 
         it("returns false when it is not present", () => {
-            assert.equal(sutEmpty.isPresent, false);
+            assert.strictEqual(sutEmpty.isPresent, false);
         });
     });
 
     describe("#isEmpty", () => {
         it("returns false when it is present", () => {
-            assert.equal(sutPresent.isEmpty, false);
+            assert.strictEqual(sutPresent.isEmpty, false);
         });
 
         it("returns true when it is not present", () => {
-            assert.equal(sutEmpty.isEmpty, true);
+            assert.strictEqual(sutEmpty.isEmpty, true);
         });
     });
 
@@ -98,10 +98,10 @@ describe("Optional", () => {
         it("calls the given function when it is present.", () => {
             let called = false;
             sutPresent.ifPresent(value => {
-                assert.equal(value, payload);
+                assert.strictEqual(value, payload);
                 called = true;
             });
-            assert.equal(called, true);
+            assert.strictEqual(called, true);
         });
 
         it("does not call the given function when it is empty.", () => {
@@ -109,7 +109,7 @@ describe("Optional", () => {
             sutEmpty.ifPresent(value => {
                 called = true;
             });
-            assert.equal(called, false);
+            assert.strictEqual(called, false);
         });
     });
 
@@ -118,13 +118,13 @@ describe("Optional", () => {
             let called = false;
             let calledEmpty = false;
             sutPresent.ifPresentOrElse(value => {
-                assert.equal(value, payload);
+                assert.strictEqual(value, payload);
                 called = true;
             }, () => {
                 calledEmpty = true;
             });
-            assert.equal(called, true);
-            assert.equal(calledEmpty, false);
+            assert.strictEqual(called, true);
+            assert.strictEqual(calledEmpty, false);
         });
 
         it("calls the emptyAction function when it is empty.", () => {
@@ -135,15 +135,15 @@ describe("Optional", () => {
             }, () => {
                 calledEmpty = true;
             });
-            assert.equal(called, false);
-            assert.equal(calledEmpty, true);
+            assert.strictEqual(called, false);
+            assert.strictEqual(calledEmpty, true);
         });
     });
 
     describe("#filter", () => {
         it("returns a present optional when it is present and the predicate returns true.", () => {
             let actual = sutPresent.filter(value => value.length > 0);
-            assert.equal(actual.get(), payload);
+            assert.strictEqual(actual.get(), payload);
         });
 
         it("returns an empty optional when it is present and the predicate returns false.", () => {
@@ -163,7 +163,7 @@ describe("Optional", () => {
         it("returns a present optional whose payload is mapped by the given function when it is present.", () => {
             let actual = sutPresent.map(mapper).get();
             let expected = mapper(payload);
-            assert.equal(actual, expected);
+            assert.strictEqual(actual, expected);
         });
 
         it("return an empty optional when it is empty.", () => {
@@ -175,11 +175,11 @@ describe("Optional", () => {
             const payload = {
                 a: "A"
             };
-            assert.equal(payload.a, Optional.ofNonNull(payload).map(p => p.a).get());
+            assert.strictEqual(payload.a, Optional.ofNonNull(payload).map(p => p.a).get());
 
             const fallback = "B";
-            assert.equal(fallback, Optional.ofNonNull(payload as any).map(p => p.b).orElse(fallback));
-            assert.equal(fallback, Optional.ofNonNull(payload).map(p => null as any).orElse(fallback));
+            assert.strictEqual(fallback, Optional.ofNonNull(payload as any).map(p => p.b).orElse(fallback));
+            assert.strictEqual(fallback, Optional.ofNonNull(payload).map(p => null as any).orElse(fallback));
         })
     });
 
@@ -198,7 +198,7 @@ describe("Optional", () => {
                 let positive = 42;
                 let sut = Optional.ofNonNull(positive);
                 let actual = sut.flatMap(powerIfPositive);
-                assert.equal(actual.get(),  power(positive));
+                assert.strictEqual(actual.get(),  power(positive));
             });
 
             it("returns the empty optional which is mapped by the given function "
@@ -223,7 +223,7 @@ describe("Optional", () => {
     
             it("returns value of applying bi-function to two payloads when both of the two optionals are present.", () => {
                 let actual = left.flatMap(x => right.map(y => x + y));
-                assert.equal(actual.get(), sum);
+                assert.strictEqual(actual.get(), sum);
             });
     
             it("returns empty optional when the left is present and the right is empty.", () => {
@@ -249,7 +249,7 @@ describe("Optional", () => {
 
         it("returns the supplier's value when it is empty.", () => {
             const actual = sutEmpty.or(supplier);
-            assert.equal(actual.get(), another);
+            assert.strictEqual(actual.get(), another);
         });
     });
 
@@ -258,12 +258,12 @@ describe("Optional", () => {
 
         it("returns the original payload when it is present.", () => {
             let actual = sutPresent.orElse(another);
-            assert.equal(actual, sutPresent.get());
+            assert.strictEqual(actual, sutPresent.get());
         });
 
         it("returns the given value when it is empty.", () => {
             let actual = sutEmpty.orElse(another);
-            assert.equal(actual, another);
+            assert.strictEqual(actual, another);
         });
     });
 
@@ -272,19 +272,19 @@ describe("Optional", () => {
 
         it("returns the original payload when it is present.", () => {
             let actual = sutPresent.orElseGet(() => another);
-            assert.equal(actual, sutPresent.get());
+            assert.strictEqual(actual, sutPresent.get());
         });
 
         it("returns the value returned by the given function when it is empty.", () => {
             let actual = sutEmpty.orElseGet(() => another);
-            assert.equal(actual, another);
+            assert.strictEqual(actual, another);
         });
     });
 
     describe("#orElseThrow", () => {
         it("returns the original payload when it is present.", () => {
             let actual = sutPresent.orElseThrow(TypeError);
-            assert.equal(actual, sutPresent.get());
+            assert.strictEqual(actual, sutPresent.get());
         });
 
         it("throw the exception returned by the given function when it is empty.", () => {
