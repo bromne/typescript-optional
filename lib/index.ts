@@ -1,10 +1,20 @@
 export default abstract class Optional<T> {
+    /**
+     * Returns true if this is present, otherwise false.
+     */
     abstract get isPresent(): boolean;
     
+    /**
+     * Returns true if this is empty, otherwise false. A negation of isPresent.
+     */
     get isEmpty(): boolean {
         return !this.isPresent;
     }
-    
+
+    /**
+     * If a payload is present, returns the payload, otherwise throws TypeError.
+     * @throws {TypeError} if this is empty.
+     */
     abstract get(): T;
     
     abstract ifPresent(consumer: (value: T) => void): void;
