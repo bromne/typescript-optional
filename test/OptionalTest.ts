@@ -27,7 +27,7 @@ describe("Optional", () => {
         });
     });
     
-    describe("#of", () => {
+    describe("#ofNonNull", () => {
         it("returns a present optional when it is given a non-null value.", () => {
             let sut = Optional.ofNonNull("foo");
             assert(sut.isPresent);
