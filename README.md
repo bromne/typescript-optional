@@ -32,20 +32,20 @@ import Optional from 'typescript-optional';
 ### creating `Optional<T>` objects
 
 ```ts
-let nullableString: string | null = /* some nullable value */;
+const nullableString: string | null = /* some nullable value */;
 
 // all the following variables will be parameterized as Optional<string>.
-let optional = Optional.ofNullable(nullableString);
-let optionalPresent1 = Optional.ofNullable("foo");
-let optionalPresent2 = Optional.ofNonNull("foo"); // accepts non-null value (or else throws TypeError)
-let optionalEmpty1: Optional<string> = Optional.empty(); // type hinting required
-let optionalEmpty2 = Optional.empty<string>(); // or parameterize explicitly
+const optional = Optional.ofNullable(nullableString);
+const optionalPresent1 = Optional.ofNullable("foo");
+const optionalPresent2 = Optional.ofNonNull("foo"); // accepts non-null value (or else throws TypeError)
+const optionalEmpty1: Optional<string> = Optional.empty(); // type hinting required
+const optionalEmpty2 = Optional.empty<string>(); // or parameterize explicitly
 ```
 
 ### operations
 
 ```ts
-let optional: Optional<string> = Optional.ofNullable( /* some optional value: null | string */ );
+const optional: Optional<string> = Optional.ofNullable( /* some optional value: null | string */ );
 
 // force to retrieve the payload. (or else throws TypeError.)
 // this method is not used match.
@@ -70,13 +70,13 @@ optional.filter(value => value.length > 0);
 optional.map(value => value.length);
 
 // map a payload with the given mapper which returns value wrapped with Optional type.
-let powerIfPositive: (x: Number) => Optional<Number>
+const powerIfPositive: (x: Number) => Optional<Number>
     = x => (x > 0) ? Optional.ofNonNull(x * x) : Optional.empty();
-let numberOptional: Optional<number> = Optional.ofNullable(/* some optional value: null | number */)
+const numberOptional: Optional<number> = Optional.ofNullable(/* some optional value: null | number */)
 numberOptional.flatMap(value => powerIfPositive(value));
 
 // return this if this is present, return the given another optional otherwise.
-let another: Optional<string> = Optional.ofNullable(/* ... */);
+const another: Optional<string> = Optional.ofNullable(/* ... */);
 optional.or(another);
 
 // retrieve a payload if this is present, return the given value otherwise.
