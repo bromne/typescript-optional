@@ -1,66 +1,128 @@
 export default abstract class Optional<T> {
     /**
-     * Returns true if this is present, otherwise false.
+     * Returns `true` if this is present, otherwise `false`.
      */
     abstract get isPresent(): boolean;
     
     /**
-     * Returns true if this is empty, otherwise false. A negation of isPresent.
+     * Returns true if this is empty, otherwise false.
+     * This method is negation of `Optional.isPresent`.
+     * 
      */
     get isEmpty(): boolean {
         return !this.isPresent;
     }
 
     /**
-     * If a payload is present, returns the payload, otherwise throws TypeError.
+     * If a payload is present, returns the payload, otherwise throws `TypeError`.
      * 
      * @throws {TypeError} if this is empty.
      */
     abstract get(): T;
     
     /**
-     * If a payload is present, executes the given consumer, otherwise not.
+     * If a payload is present, executes the given `consumer`, otherwise not.
      * 
      * @param consumer a consumer of the payload
      */
     abstract ifPresent(consumer: (value: T) => void): void;
 
     /**
-     * If a payload is present, executes the given consumer,
-     * otherwise executes the emptyAction instead.
+     * If a payload is present, executes the given `consumer`,
+     * otherwise executes `emptyAction` instead.
      * 
-     * @param consumer a consumer of the payload
-     * @param emptyAction an action executed when this is empty
+     * @param consumer a consumer of the payload, if present
+     * @param emptyAction an action, if empty
      */
     abstract ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void;
 
     /**
-     * If a payload is present and the payload matches the given predicate,
-     * returns the same Optional,
-     * otherwise returns an empty Optional even if this is present.
+     * If a payload is present and the payload matches the given `predicate`, returns `this`,
+     * otherwise returns an empty `Optional` even if this is present.
      * 
-     * @param predicate a predicate to test the value
+     * @param predicate a predicate to test the payload, if present
      */
     abstract filter(predicate: (value: T) => boolean): Optional<T>;
     
     /**
-     * If a value is present, apply the given mapper to the value,
-     * and if the result is not null,
-     * returns a present Optional whose payload is the mapped value.
-     * @param mapper
+     * If a payload is present, returns an `Optional` as if applying `Optional.ofNullable` to the result of
+     * applying the given `mapper` to the payload,
+     * otherwise returns an empty `Optional`.
+     * 
+     * @param mapper a mapper to apply the payload, if present
      */
     abstract map<U> (mapper: (value: T) => U): Optional<U>;
     
+    /**
+     * If a payload is present, returns the result of applying the given `mapper` to the payload,
+     * otherwise returns an empty `Optional`.
+     * 
+     * @param mapper a mapper to app;y the payload, if present
+     */
     abstract flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U>;
 
+    /**
+     * If a payload is present, returns `this`,
+     * otherwise returns an `Optional` provided by the given `supplier`.
+     * 
+     * @param supplier a supplier
+     */
     abstract or(supplier: () => Optional<T>): Optional<T>;
 
+    /**
+     * If a payload is present, returns the payload, otherwise returns `another`.
+     * 
+     * @param another an another value
+     */
     abstract orElse(another: T): T;
     
-    abstract orElseGet(another: () => T): T;
+    /**
+     * If a payload is present, returns the payload,
+     * otherwise returns the result provided by the given `supplier`.
+     * 
+     * @param supplier a supplier of another value
+     */
+    abstract orElseGet(supplier: () => T): T;
     
-    abstract orElseThrow<U>(exception: () => U): T;
+    /**
+     * If a payload is present, returns the payload,
+     * otherwise throws an error provided by the given `errorSupplier`.
+     * 
+     * @param errorSupplier a supplier of an error
+     * @throws {T} when `this` is empty.
+     */
+    abstract orElseThrow<U>(errorSupplier: () => U): T;
 
+    /**
+     * Returns an Optional whose payload is the given non-null `value`.
+     * 
+     * @param value a value 
+     * @throws {TypeError} when the given `value` is `null` or `undefined`.
+     */
+    static of<T>(value: T): Optional<T> {
+        if (value !== null && value !== undefined)
+            return new PresentOptional<T>(value);
+        else
+            throw new TypeError("The passed value was null or undefined.");
+    }
+
+    /**
+     * This method is an alias of `Optional.of`.
+     * 
+     * @param value a value
+     * @throws {TypeError} when the given `value` is `null` or `undefined`.
+     */
+    static ofNonNull<T>(value: T): Optional<T> {
+        return Optional.of(value);
+    }
+
+    /**
+     * If the given `nullable` value is not `null` or `undefined`,
+     * returns an `Optional` whose payload is the given value,
+     * otherwise (or when `null` or `undefined`) returns an empty `Optional`.
+     * 
+     * @param nullable a nullable value
+     */
     static ofNullable<T>(nullable: T | null | undefined): Optional<T> {
         if (nullable !== null && nullable !== undefined)
             return new PresentOptional<T>(nullable);
@@ -68,17 +130,9 @@ export default abstract class Optional<T> {
             return new EmptyOptional<T>();
     }
 
-    static ofNonNull<T>(payload: T): Optional<T> {
-        return Optional.of(payload);
-    }
-
-    static of<T>(payload: T): Optional<T> {
-        if (payload !== null && payload !== undefined)
-            return new PresentOptional<T>(payload);
-        else
-            throw new TypeError("The passed value was null or undefined.");
-    }
-
+    /**
+     * Returns an empty `Optional`.
+     */
     static empty<T>(): Optional<T> {
         return new EmptyOptional();
     }

@@ -7,6 +7,36 @@ describe("Optional", () => {
     const sutPresent: Optional<string> = Optional.ofNonNull(payload);
     const sutEmpty: Optional<string> = Optional.empty();
 
+    describe("#of", () => {
+        it("should return a present Optional when it is given a non-null value.", () => {
+            const sut = Optional.of("foo");
+            assert(sut.isPresent);
+        });
+
+        it("should throw an exception when it is given null.", () => {
+            assert.throws(() => Optional.of<string | null>(null))
+        });
+
+        it("should throw an exception when it is given undefined.", () => {
+            assert.throws(() => Optional.of<string | undefined>(undefined))
+        });
+    });
+
+    describe("#ofNonNull", () => {
+        it("should return a present Optional when it is given a non-null value.", () => {
+            const sut = Optional.ofNonNull("foo");
+            assert(sut.isPresent);
+        });
+
+        it("should throw an exception when it is given null.", () => {
+            assert.throws(() => Optional.ofNonNull<string | null>(null))
+        });
+
+        it("should throw an exception when it is given undefined.", () => {
+            assert.throws(() => Optional.ofNonNull<string | undefined>(undefined))
+        });
+    });
+
     describe("#ofNullable", () => {
         const getNullable: () => string | null = () => null;
         const getUndefinedable: () => string | undefined = () => undefined;
@@ -27,36 +57,6 @@ describe("Optional", () => {
         });
     });
     
-    describe("#ofNonNull", () => {
-        it("should return a present Optional when it is given a non-null value.", () => {
-            const sut = Optional.ofNonNull("foo");
-            assert(sut.isPresent);
-        });
-
-        it("should throw an exception when it is given null.", () => {
-            assert.throws(() => Optional.ofNonNull<string | null>(null))
-        });
-
-        it("should throw an exception when it is given undefined.", () => {
-            assert.throws(() => Optional.ofNonNull<string | undefined>(undefined))
-        });
-    });
-
-    describe("#of", () => {
-        it("should return a present Optional when it is given a non-null value.", () => {
-            const sut = Optional.of("foo");
-            assert(sut.isPresent);
-        });
-
-        it("should throw an exception when it is given null.", () => {
-            assert.throws(() => Optional.of<string | null>(null))
-        });
-
-        it("should throw an exception when it is given undefined.", () => {
-            assert.throws(() => Optional.of<string | undefined>(undefined))
-        });
-    });
-
     describe("#empty", () => {
         it("should return an empty Optional.", () => {
             const sut: Optional<string> = Optional.empty();
@@ -186,33 +186,32 @@ describe("Optional", () => {
 
     describe("#flatMap", () => {
         {
-            const power = (x: number) => Math.pow(x, 2);
-            const powerIfPositive: (x: number) => Optional<number> = x => {
-                if (x > 0)
-                    return Optional.ofNonNull(power(x));
+            const sqrtIfNonNegative: (x: number) => Optional<number> = x => {
+                if (x >= 0)
+                    return Optional.ofNonNull(Math.sqrt(x));
                 else
                     return Optional.empty();
             };
             
             it("should return the present Optional which is mapped by the given function "
                     + "if it is present and the function should return present.", () => {
-                const positive = 42;
-                const sut = Optional.ofNonNull(positive);
-                const actual = sut.flatMap(powerIfPositive);
-                assert.strictEqual(actual.get(),  power(positive));
+                const nonNegative = 16;
+                const sut = Optional.ofNonNull(nonNegative);
+                const actual = sut.flatMap(sqrtIfNonNegative);
+                assert.strictEqual(actual.get(), Math.sqrt(nonNegative));
             });
 
             it("should return the empty Optional which is mapped by the given function "
                     + "if it is present and the function should return empty.", () => {
-                const negative = -42;
+                const negative = -16;
                 const sut = Optional.ofNonNull(negative);
-                const actual = sut.flatMap(powerIfPositive);
+                const actual = sut.flatMap(sqrtIfNonNegative);
                 assert(actual.isEmpty);
             });
             
             it("should return the empty Optional if it is empty.", () => {
                 const sut = Optional.empty<number>();
-                const actual = sut.flatMap(powerIfPositive);
+                const actual = sut.flatMap(sqrtIfNonNegative);
                 assert(actual.isEmpty);
             });
         }
