@@ -13,16 +13,42 @@ export default abstract class Optional<T> {
 
     /**
      * If a payload is present, returns the payload, otherwise throws TypeError.
+     * 
      * @throws {TypeError} if this is empty.
      */
     abstract get(): T;
     
+    /**
+     * If a payload is present, executes the given consumer, otherwise not.
+     * 
+     * @param consumer a consumer of the payload
+     */
     abstract ifPresent(consumer: (value: T) => void): void;
 
+    /**
+     * If a payload is present, executes the given consumer,
+     * otherwise executes the emptyAction instead.
+     * 
+     * @param consumer a consumer of the payload
+     * @param emptyAction an action executed when this is empty
+     */
     abstract ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void;
-    
+
+    /**
+     * If a payload is present and the payload matches the given predicate,
+     * returns the same Optional,
+     * otherwise returns an empty Optional even if this is present.
+     * 
+     * @param predicate a predicate to test the value
+     */
     abstract filter(predicate: (value: T) => boolean): Optional<T>;
     
+    /**
+     * If a value is present, apply the given mapper to the value,
+     * and if the result is not null,
+     * returns a present Optional whose payload is the mapped value.
+     * @param mapper
+     */
     abstract map<U> (mapper: (value: T) => U): Optional<U>;
     
     abstract flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U>;
