@@ -1,3 +1,5 @@
+import { Option, Cases } from "./types";
+
 export default abstract class Optional<T> {
     /**
      * Returns `true` if this is present, otherwise `false`.
@@ -93,6 +95,14 @@ export default abstract class Optional<T> {
      */
     abstract orElseThrow<U>(errorSupplier: () => U): T;
 
+    abstract toOption(): Option<T>;
+
+    abstract orNull(): T | null;
+    
+    abstract orUndefined(): T | undefined;
+
+    abstract matches<U>(cases: Cases<T, U>): U;
+
     /**
      * Returns an Optional whose payload is the given non-null `value`.
      * 
@@ -135,6 +145,14 @@ export default abstract class Optional<T> {
      */
     static empty<T>(): Optional<T> {
         return new EmptyOptional();
+    }
+
+    static from<T>(option: Option<T>): Optional<T> {
+        switch (option.kind) {
+            case "present": return Optional.of(option.value);
+            case "empty": return Optional.empty();
+            default: throw new TypeError("The passed value was not an Option type.");
+        }
     }
 }
 
@@ -189,6 +207,22 @@ class PresentOptional<T> extends Optional<T> {
     orElseThrow<U>(exception: () => U): T {
         return this.payload;
     }
+
+    orNull(): T {
+        return this.payload;
+    }
+
+    orUndefined(): T {
+        return this.payload;
+    }
+
+    toOption(): Option<T> {
+        return { kind: "present", value: this.payload };
+    }
+
+    matches<U>(cases: Cases<T, U>): U {
+        return cases.present(this.payload);
+    }
 }
 
 class EmptyOptional<T> extends Optional<T> {
@@ -237,5 +271,21 @@ class EmptyOptional<T> extends Optional<T> {
 
     orElseThrow<U>(exception: () => U): T {
         throw exception();
+    }
+    
+    orNull(): null {
+        return null;
+    }
+
+    orUndefined(): undefined {
+        return undefined;
+    }
+
+    toOption(): Option<T> {
+        return { kind: "empty" };
+    }
+
+    matches<U>(cases: Cases<T, U>): U {
+        return cases.empty();
     }
 }

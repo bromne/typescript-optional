@@ -1,6 +1,7 @@
 import 'mocha';
 import * as assert from 'power-assert';
 import Optional from "../lib";
+import { Cases, Option } from '../lib/types';
 
 describe("Optional", () => {
     const payload: string = "foo";
@@ -56,7 +57,26 @@ describe("Optional", () => {
             assert(sut.isEmpty);
         });
     });
-    
+
+    describe("#from", () => {
+        it("returns a present optional when it is given a present option.", () => {
+            let presentOption: Option<string> = { kind: "present", value: payload };
+            let sut = Optional.from(presentOption);
+            assert(sut.isPresent);
+        });
+
+        it("returns an empty optional when it is given an empty option.", () => {
+            let emptyOption: Option<string> = { kind: "empty" };
+            let sut = Optional.from(emptyOption);
+            assert(sut.isEmpty);
+        });
+
+        it("throws an exception when it is given a value which is not Option type.", () => {
+            let malformed: any = {};
+            assert.throws(() => Optional.from(malformed));
+        });
+    });
+
     describe("#empty", () => {
         it("should return an empty Optional.", () => {
             const sut: Optional<string> = Optional.empty();
@@ -290,5 +310,60 @@ describe("Optional", () => {
         it("should throw the exception returned by the given function if it is empty.", () => {
             assert.throws(() => sutEmpty.orElseThrow(TypeError));
         });
+    });
+
+    describe("#toOption", () => {
+        it("returns a Some value when it is present.", () => {
+            let actual = sutPresent.toOption();
+            assert.equal(actual.kind, "present");
+        });
+
+        it("returns a None value when it is empty.", () => {
+            let actual = sutEmpty.toOption();
+            assert.equal(actual.kind, "empty");
+        });
+    });
+
+    describe("#orNull", () => {
+        it("returns the original payload when it is present.", () => {
+            let actual = sutPresent.orNull();
+            assert.strictEqual(actual, sutPresent.get());
+        });
+
+        it("returns null when it is empty.", () => {
+            let actual = sutEmpty.orNull();
+            assert.strictEqual(actual, null);
+        }); 
+    });
+
+    describe("#orUndefined", () => {
+        it("returns the original payload when it is present.", () => {
+            let actual = sutPresent.orUndefined();
+            assert.strictEqual(actual, sutPresent.get());
+        });
+
+        it("returns null when it is empty.", () => {
+            let actual = sutEmpty.orUndefined();
+            assert.strictEqual(actual, undefined);
+        }); 
+    });
+
+    describe("#matches", () => {
+        let cases: Cases<string, number> = {
+            present: x => x.length,
+            empty: () => 0,
+        };
+
+        it("returns a value converted from the payload by the given 'some' function when it is present", () => {
+            let actual = sutPresent.matches(cases);
+            let expected = cases.present(payload);
+            assert.strictEqual(actual, expected);
+        })
+
+        it("returns the value returned by the given 'none' function when it is empty.", () => {
+            let actual = sutEmpty.matches(cases);
+            let expected = cases.empty();
+            assert.strictEqual(actual, expected);
+        })
     });
 });
