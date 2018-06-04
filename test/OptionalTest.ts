@@ -11,24 +11,24 @@ describe("Optional", () => {
         const getNullable: () => string | null = () => null;
         const getUndefinedable: () => string | undefined = () => undefined;
 
-        it("should return a present optional when it is given a non-null value.", () => {
+        it("should return a present Optional when it is given a non-null value.", () => {
             const sut = Optional.ofNullable("foo");
             assert(sut.isPresent);
         });
         
-        it("should return an empty optional when it receives null.", () => {
+        it("should return an empty Optional when it receives null.", () => {
             const sut: Optional<string> = Optional.ofNullable(getNullable());
             assert(sut.isEmpty);
         });
 
-        it("should return an empty optional when it receives undefined.", () => {
+        it("should return an empty Optional when it receives undefined.", () => {
             const sut: Optional<string> = Optional.ofNullable(getUndefinedable());
             assert(sut.isEmpty);
         });
     });
     
     describe("#ofNonNull", () => {
-        it("should return a present optional when it is given a non-null value.", () => {
+        it("should return a present Optional when it is given a non-null value.", () => {
             const sut = Optional.ofNonNull("foo");
             assert(sut.isPresent);
         });
@@ -43,7 +43,7 @@ describe("Optional", () => {
     });
 
     describe("#of", () => {
-        it("should return a present optional when it is given a non-null value.", () => {
+        it("should return a present Optional when it is given a non-null value.", () => {
             const sut = Optional.of("foo");
             assert(sut.isPresent);
         });
@@ -58,7 +58,7 @@ describe("Optional", () => {
     });
 
     describe("#empty", () => {
-        it("should return an empty optional.", () => {
+        it("should return an empty Optional.", () => {
             const sut: Optional<string> = Optional.empty();
             assert(sut.isEmpty);
         });
@@ -141,17 +141,17 @@ describe("Optional", () => {
     });
 
     describe("#filter", () => {
-        it("should return a present optional if it is present and the predicate should return true.", () => {
+        it("should return a present Optional if it is present and the predicate should return true.", () => {
             const actual = sutPresent.filter(value => value.length > 0);
             assert.strictEqual(actual.get(), payload);
         });
 
-        it("should return an empty optional if it is present and the predicate should return false.", () => {
+        it("should return an empty Optional if it is present and the predicate should return false.", () => {
             const actual = sutPresent.filter(value => value.length === 0);
             assert(actual.isEmpty);
         });
 
-        it("should return an empty optional if it is empty.", () => {
+        it("should return an empty Optional if it is empty.", () => {
             const actual = sutEmpty.filter(value => true);
             assert(actual.isEmpty);
         });
@@ -160,13 +160,14 @@ describe("Optional", () => {
     describe("#map", () => {
         const mapper = (value: string) => value.length;
 
-        it("should return a present optional whose payload is mapped by the given function if it is present.", () => {
+        it("should return a present Optional whose payload is mapped by the given function "
+                + "if it is present and the result is not null.", () => {
             const actual = sutPresent.map(mapper).get();
             const expected = mapper(payload);
             assert.strictEqual(actual, expected);
         });
 
-        it("should return an empty optional if it is empty.", () => {
+        it("should return an empty Optional if it is empty.", () => {
             const actual = sutEmpty.map(mapper);
             assert(actual.isEmpty);
         });
@@ -193,7 +194,7 @@ describe("Optional", () => {
                     return Optional.empty();
             };
             
-            it("should return the present optional which is mapped by the given function "
+            it("should return the present Optional which is mapped by the given function "
                     + "if it is present and the function should return present.", () => {
                 const positive = 42;
                 const sut = Optional.ofNonNull(positive);
@@ -201,7 +202,7 @@ describe("Optional", () => {
                 assert.strictEqual(actual.get(),  power(positive));
             });
 
-            it("should return the empty optional which is mapped by the given function "
+            it("should return the empty Optional which is mapped by the given function "
                     + "if it is present and the function should return empty.", () => {
                 const negative = -42;
                 const sut = Optional.ofNonNull(negative);
@@ -209,7 +210,7 @@ describe("Optional", () => {
                 assert(actual.isEmpty);
             });
             
-            it("should return the empty optional if it is empty.", () => {
+            it("should return the empty Optional if it is empty.", () => {
                 const sut = Optional.empty<number>();
                 const actual = sut.flatMap(powerIfPositive);
                 assert(actual.isEmpty);
@@ -221,17 +222,17 @@ describe("Optional", () => {
             const empty: Optional<number> = Optional.empty();
             const sum = left.get() + right.get();
     
-            it("should return value of applying bi-function to two payloads if both of the two optionals are present.", () => {
+            it("should return value of applying bi-function to two payloads if both of the two Optionals are present.", () => {
                 const actual = left.flatMap(x => right.map(y => x + y));
                 assert.strictEqual(actual.get(), sum);
             });
     
-            it("should return empty optional if the left is present and the right is empty.", () => {
+            it("should return empty Optional if the left is present and the right is empty.", () => {
                 const actual = left.flatMap(x => empty.map(y => x + y));
                 assert(actual.isEmpty);
             });
     
-            it("should return empty optional if the left is empty and the right is present.", () => {
+            it("should return empty Optional if the left is empty and the right is present.", () => {
                 const actual = empty.flatMap(x => right.map(y => x + y));
                 assert(actual.isEmpty);
             });
@@ -242,7 +243,7 @@ describe("Optional", () => {
         const another = "bar";
         const supplier = () => Optional.ofNonNull(another);
 
-        it("should return the current optional if it is present.", () => {
+        it("should return the current Optional if it is present.", () => {
             const actual = sutPresent.or(supplier);
             assert(actual === sutPresent);
         });
