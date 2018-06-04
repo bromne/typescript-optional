@@ -1,5 +1,20 @@
 import { Option, Cases } from "./types";
 
+/**
+ * `Optional` (like Java) implementation in TypeScript.
+ * 
+ * `Optional<T>` is a type which *may* or *may not* contain a *payload* of type `T`.
+ * It provides a common interface regardless of whether an instance is *present* or is *empty*. 
+ *
+ * This module is inspired by [Optional class in Java 8+](https://docs.oracle.com/javase/10/docs/api/java/util/Optional.html).
+ * 
+ * The following methods are currently not supported:
+ * 
+ * - `equals`
+ * - `toString`
+ * - `hashCode`
+ * - `stream`
+ */
 export default abstract class Optional<T> {
     /**
      * Returns `true` if this is present, otherwise `false`.
@@ -95,12 +110,30 @@ export default abstract class Optional<T> {
      */
     abstract orElseThrow<U>(errorSupplier: () => U): T;
 
+    /**
+     * Converts this to an `Option`.
+     */
     abstract toOption(): Option<T>;
 
+    /**
+     * If a payload is present, returns the payload,
+     * otherwise returns `null`.
+     */
     abstract orNull(): T | null;
     
+    /**
+     * If a payload is present, returns the payload,
+     * otherwise returns `undefined`.
+     */
     abstract orUndefined(): T | undefined;
 
+    /**
+     * Returns an appropriate result by emulating pattern matching with the given `cases`.
+     * If a payload is present, returns the result of `present` case,
+     * otherwise returns the result of `empty` case.
+     * 
+     * @param cases cases for this `Optional`
+     */
     abstract matches<U>(cases: Cases<T, U>): U;
 
     /**
@@ -147,6 +180,12 @@ export default abstract class Optional<T> {
         return new EmptyOptional();
     }
 
+    /**
+     * Retrieve the given `option` as an Optional.
+     * 
+     * @param option an `Option` object to retrieve
+     * @throws {TypeError} when the given `option` does not have a valid `kind` attribute.
+     */
     static from<T>(option: Option<T>): Optional<T> {
         switch (option.kind) {
             case "present": return Optional.of(option.value);
