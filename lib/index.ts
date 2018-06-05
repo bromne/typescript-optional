@@ -17,20 +17,24 @@ import { Option, Cases } from "./types";
  */
 export default abstract class Optional<T> {
     /**
-     * Returns `true` if this is present, otherwise `false`.
+     * Represents whether this is present or not.
+     * 
+     * If a payload is present, be `true` , otherwise be `false`.
      */
     abstract get isPresent(): boolean;
     
     /**
-     * Returns true if this is empty, otherwise false.
-     * This method is negation of `Optional.isPresent`.
+     * Represents whether this is empty or not.
      * 
+     * If this is empty, be `true`, otherwise  be `false`.
+     * This method is negation of `Optional.isPresent`.
      */
     get isEmpty(): boolean {
         return !this.isPresent;
     }
 
     /**
+     * Force to retrieve the payload.
      * If a payload is present, returns the payload, otherwise throws `TypeError`.
      * 
      * @throws {TypeError} if this is empty.
@@ -38,7 +42,7 @@ export default abstract class Optional<T> {
     abstract get(): T;
     
     /**
-     * If a payload is present, executes the given `consumer`, otherwise not.
+     * If a payload is present, executes the given `consumer`, otherwise does nothing.
      * 
      * @param consumer a consumer of the payload
      */
@@ -54,6 +58,8 @@ export default abstract class Optional<T> {
     abstract ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void;
 
     /**
+     * Filters a payload with an additional `predicate`.
+     * 
      * If a payload is present and the payload matches the given `predicate`, returns `this`,
      * otherwise returns an empty `Optional` even if this is present.
      * 
@@ -62,6 +68,8 @@ export default abstract class Optional<T> {
     abstract filter(predicate: (value: T) => boolean): Optional<T>;
     
     /**
+     * Maps a payload with a mapper.
+     * 
      * If a payload is present, returns an `Optional` as if applying `Optional.ofNullable` to the result of
      * applying the given `mapper` to the payload,
      * otherwise returns an empty `Optional`.
@@ -71,6 +79,8 @@ export default abstract class Optional<T> {
     abstract map<U> (mapper: (value: T) => U): Optional<U>;
     
     /**
+     * Maps a payload with a mapper which returns Optional as a result.
+     * 
      * If a payload is present, returns the result of applying the given `mapper` to the payload,
      * otherwise returns an empty `Optional`.
      * 
@@ -111,11 +121,6 @@ export default abstract class Optional<T> {
     abstract orElseThrow<U>(errorSupplier: () => U): T;
 
     /**
-     * Converts this to an `Option`.
-     */
-    abstract toOption(): Option<T>;
-
-    /**
      * If a payload is present, returns the payload,
      * otherwise returns `null`.
      */
@@ -126,6 +131,11 @@ export default abstract class Optional<T> {
      * otherwise returns `undefined`.
      */
     abstract orUndefined(): T | undefined;
+
+    /**
+     * Converts this to an `Option`.
+     */
+    abstract toOption(): Option<T>;
 
     /**
      * Returns an appropriate result by emulating pattern matching with the given `cases`.

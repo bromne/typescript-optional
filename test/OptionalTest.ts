@@ -312,18 +312,6 @@ describe("Optional", () => {
         });
     });
 
-    describe("#toOption", () => {
-        it("returns a Some value when it is present.", () => {
-            let actual = sutPresent.toOption();
-            assert.equal(actual.kind, "present");
-        });
-
-        it("returns a None value when it is empty.", () => {
-            let actual = sutEmpty.toOption();
-            assert.equal(actual.kind, "empty");
-        });
-    });
-
     describe("#orNull", () => {
         it("returns the original payload when it is present.", () => {
             let actual = sutPresent.orNull();
@@ -346,6 +334,18 @@ describe("Optional", () => {
             let actual = sutEmpty.orUndefined();
             assert.strictEqual(actual, undefined);
         }); 
+    });
+
+    describe("#toOption", () => {
+        it("returns a Some value when it is present.", () => {
+            let actual = sutPresent.toOption();
+            assert.equal(actual.kind, "present");
+        });
+
+        it("returns a None value when it is empty.", () => {
+            let actual = sutEmpty.toOption();
+            assert.equal(actual.kind, "empty");
+        });
     });
 
     describe("#matches", () => {
