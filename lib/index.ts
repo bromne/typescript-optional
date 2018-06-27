@@ -1,19 +1,40 @@
+import { Option, Cases } from "./types";
+
+/**
+ * `Optional` (like Java) implementation in TypeScript.
+ * 
+ * `Optional<T>` is a type which *may* or *may not* contain a *payload* of type `T`.
+ * It provides a common interface regardless of whether an instance is *present* or is *empty*. 
+ *
+ * This module is inspired by [Optional class in Java 8+](https://docs.oracle.com/javase/10/docs/api/java/util/Optional.html).
+ * 
+ * The following methods are currently not supported:
+ * 
+ * - `equals`
+ * - `toString`
+ * - `hashCode`
+ * - `stream`
+ */
 export default abstract class Optional<T> {
     /**
-     * Returns `true` if this is present, otherwise `false`.
+     * Represents whether this is present or not.
+     * 
+     * If a payload is present, be `true` , otherwise be `false`.
      */
     abstract get isPresent(): boolean;
     
     /**
-     * Returns true if this is empty, otherwise false.
-     * This method is negation of `Optional.isPresent`.
+     * Represents whether this is empty or not.
      * 
+     * If this is empty, be `true`, otherwise  be `false`.
+     * This method is negation of `Optional.isPresent`.
      */
     get isEmpty(): boolean {
         return !this.isPresent;
     }
 
     /**
+     * Force to retrieve the payload.
      * If a payload is present, returns the payload, otherwise throws `TypeError`.
      * 
      * @throws {TypeError} if this is empty.
@@ -21,7 +42,7 @@ export default abstract class Optional<T> {
     abstract get(): T;
     
     /**
-     * If a payload is present, executes the given `consumer`, otherwise not.
+     * If a payload is present, executes the given `consumer`, otherwise does nothing.
      * 
      * @param consumer a consumer of the payload
      */
@@ -37,6 +58,8 @@ export default abstract class Optional<T> {
     abstract ifPresentOrElse(consumer: (value: T) => void, emptyAction: () => void): void;
 
     /**
+     * Filters a payload with an additional `predicate`.
+     * 
      * If a payload is present and the payload matches the given `predicate`, returns `this`,
      * otherwise returns an empty `Optional` even if this is present.
      * 
@@ -45,6 +68,8 @@ export default abstract class Optional<T> {
     abstract filter(predicate: (value: T) => boolean): Optional<T>;
     
     /**
+     * Maps a payload with a mapper.
+     * 
      * If a payload is present, returns an `Optional` as if applying `Optional.ofNullable` to the result of
      * applying the given `mapper` to the payload,
      * otherwise returns an empty `Optional`.
@@ -54,6 +79,8 @@ export default abstract class Optional<T> {
     abstract map<U> (mapper: (value: T) => U): Optional<U>;
     
     /**
+     * Maps a payload with a mapper which returns Optional as a result.
+     * 
      * If a payload is present, returns the result of applying the given `mapper` to the payload,
      * otherwise returns an empty `Optional`.
      * 
@@ -92,6 +119,32 @@ export default abstract class Optional<T> {
      * @throws {T} when `this` is empty.
      */
     abstract orElseThrow<U>(errorSupplier: () => U): T;
+
+    /**
+     * If a payload is present, returns the payload,
+     * otherwise returns `null`.
+     */
+    abstract orNull(): T | null;
+    
+    /**
+     * If a payload is present, returns the payload,
+     * otherwise returns `undefined`.
+     */
+    abstract orUndefined(): T | undefined;
+
+    /**
+     * Converts this to an `Option`.
+     */
+    abstract toOption(): Option<T>;
+
+    /**
+     * Returns an appropriate result by emulating pattern matching with the given `cases`.
+     * If a payload is present, returns the result of `present` case,
+     * otherwise returns the result of `empty` case.
+     * 
+     * @param cases cases for this `Optional`
+     */
+    abstract matches<U>(cases: Cases<T, U>): U;
 
     /**
      * Returns an Optional whose payload is the given non-null `value`.
@@ -135,6 +188,20 @@ export default abstract class Optional<T> {
      */
     static empty<T>(): Optional<T> {
         return new EmptyOptional();
+    }
+
+    /**
+     * Retrieve the given `option` as an Optional.
+     * 
+     * @param option an `Option` object to retrieve
+     * @throws {TypeError} when the given `option` does not have a valid `kind` attribute.
+     */
+    static from<T>(option: Option<T>): Optional<T> {
+        switch (option.kind) {
+            case "present": return Optional.of(option.value);
+            case "empty": return Optional.empty();
+            default: throw new TypeError("The passed value was not an Option type.");
+        }
     }
 }
 
@@ -189,6 +256,22 @@ class PresentOptional<T> extends Optional<T> {
     orElseThrow<U>(exception: () => U): T {
         return this.payload;
     }
+
+    orNull(): T {
+        return this.payload;
+    }
+
+    orUndefined(): T {
+        return this.payload;
+    }
+
+    toOption(): Option<T> {
+        return { kind: "present", value: this.payload };
+    }
+
+    matches<U>(cases: Cases<T, U>): U {
+        return cases.present(this.payload);
+    }
 }
 
 class EmptyOptional<T> extends Optional<T> {
@@ -237,5 +320,21 @@ class EmptyOptional<T> extends Optional<T> {
 
     orElseThrow<U>(exception: () => U): T {
         throw exception();
+    }
+    
+    orNull(): null {
+        return null;
+    }
+
+    orUndefined(): undefined {
+        return undefined;
+    }
+
+    toOption(): Option<T> {
+        return { kind: "empty" };
+    }
+
+    matches<U>(cases: Cases<T, U>): U {
+        return cases.empty();
     }
 }
