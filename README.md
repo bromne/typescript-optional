@@ -49,8 +49,6 @@ const optionalEmpty1: Optional<string> = Optional.empty(); // type hinting requi
 const optionalEmpty2 = Optional.empty<string>(); // or parameterize explicitly
 ```
 
-
-
 ### operations
 
 ```ts
@@ -122,28 +120,28 @@ optional.toOption();
 ### prototype-free types
 
 While `Optional`'s fluent interface for method chaining with `prototype` is usually useful and elegant,
-relying on `prototype` can cause some problems in certain situations like an external function that copies such objects *except* `prototype`.
-For example, `setState` of React reflects the given value as a state except its `prototype` (and then you will see "TypeError: undefined is not a function" in runtime though TypeScript compilation has been succeeded!).
+relying on `prototype` can cause some problems in certain situations like that an external function copies such objects *except* `prototype`.
+For example, `setState` of React reflects the given value as a state except the value's `prototype` (and then you will see "TypeError: undefined is not a function" in runtime though TypeScript compilation has been succeeded!).
 
-To avoid this issue, you have three options that *open* an `Optional` into a *prototype-free*, or a simple JavaScript object (associative array, string etc.).
+To avoid this issue, you have three options that *convert* an `Optional` into a *prototype-free*, or a simple JavaScript object (associative array, string etc.).
 
-- `Option.orNull`
-- `Option.orUndefined`
-- `Option.toOption`
+- `Optional.orNull`
+- `Optional.orUndefined`
+- `Optional.toOption`
 
-#### `Option.orNull` and `Option.orUndefined`
+#### `Optional.orNull` and `Optional.orUndefined`
 
-Using `Option.orNull` or `Option.orUndefined` is the simple way to obtain prototype-free objects.
-These methods convert an Optional<T> into a value of *type union*.
+Using `Optional.orNull` or `Optional.orUndefined` is the simple way to obtain prototype-free objects.
+These methods convert an `Optional<T>` into a value of *type union*.
 
-`Option<T>.orNull` returns `T | null`.
+`Optional<T>.orNull` returns `T | null`.
 
 `Optional<T>.orUndefined` returns `T | undefined`. The `T | undefined` type is compatible with [optional parameters and properties](http://www.typescriptlang.org/docs/handbook/advanced-types.html#optional-parameters-and-properties) of TypeScript.
 
 Use `Optional.ofNullable` to restore an Optional value from a value of these type unions.
 
 ```ts
-const update: <T> (original: T) => T = /* some external function */
+const update: <T> (original: T) => T = /* some external function that returns without the prototype */
 const optional: Optional<string> = /* some Optional object */;
 
 let nullable: string | null = optional.orNull();
@@ -162,9 +160,20 @@ const optionalFromOrUndefined: Optional<string> = Optional.ofNullble(orUndefined
 
 #### `Option.toOption`
 
+As a more explicit way to obtain prototype-free objects, `Optional.toOption` is provided.
+This method convert an `Optional<T>` into an object of `Option<T>` type, which conforms to [*discriminated unions*](http://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions) also known as *algebraic data types*.
+Refer the [API document](lib/types.ts) of `Option<T>` to learn about the structure.
+
 ```ts
+const update: <T> (original: Option<T>) => T = /* some external function that returns without the prototype */
 const optional: Optional<string> = /* some Optional value */;
-const option: Option<string> = optional.toOption();
+
+let option: Option<string> = optional.toOption();
+
+// update using external functions!
+option = update(option);
+
+// restore from Option<T>.
 const optionalFromOption: Optional<string> = Optional.from(option);
 ```
 
