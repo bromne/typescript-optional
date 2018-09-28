@@ -198,9 +198,12 @@ describe("Optional", () => {
             };
             assert.strictEqual(payload.a, Optional.ofNonNull(payload).map(p => p.a).get());
 
+            const mapper : (x:boolean) => undefined|number = (isNull : boolean) => isNull ? undefined : 1;
+
             const fallback = "B";
             assert.strictEqual(fallback, Optional.ofNonNull(payload as any).map(p => p.b).orElse(fallback));
             assert.strictEqual(fallback, Optional.ofNonNull(payload).map(p => null as any).orElse(fallback));
+            assert.strictEqual(fallback, Optional.ofNonNull(payload as any).map(p => mapper(true)).orElse(fallback));
         })
     });
 
