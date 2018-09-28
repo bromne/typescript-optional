@@ -193,17 +193,27 @@ describe("Optional", () => {
         });
 
         it("should handle null/undefined mapper return value properly", () => {
-            const payload = {
+            interface Payload {
+                a: string;
+            }
+
+            const payload : Payload = {
                 a: "A"
             };
             assert.strictEqual(payload.a, Optional.ofNonNull(payload).map(p => p.a).get());
 
-            const mapper : (x:boolean) => undefined|number = (isNull : boolean) => isNull ? undefined : 1;
-
             const fallback = "B";
             assert.strictEqual(fallback, Optional.ofNonNull(payload as any).map(p => p.b).orElse(fallback));
             assert.strictEqual(fallback, Optional.ofNonNull(payload).map(p => null as any).orElse(fallback));
-            assert.strictEqual(fallback, Optional.ofNonNull(payload as any).map(p => mapper(true)).orElse(fallback));
+
+            const mapper : (x:boolean) => undefined|Payload = (isNull : boolean) => isNull ? undefined : payload;
+
+            const fallbackPayload = {
+                a: "B"
+            };
+
+            assert.strictEqual(fallbackPayload, Optional.ofNonNull(payload).map(p => mapper(true)).orElse(fallbackPayload));
+            assert.strictEqual(payload.a, Optional.ofNonNull(payload).map(p => mapper(false)).map(x => x.a).get());
         })
     });
 
