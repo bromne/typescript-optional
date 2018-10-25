@@ -1,8 +1,5 @@
 import { Option, Cases } from "./types";
 
-type Diff<T, U> = T extends U ? never : T;  // Remove types from T that are assignable to U
-type NonNullable<T> = Diff<T, null | undefined>;  // Remove null and undefined from T
-
 /**
  * `Optional` (like Java) implementation in TypeScript.
  * 
@@ -236,8 +233,9 @@ class PresentOptional<T> extends Optional<T> {
         return (predicate(this.payload)) ? this : Optional.empty();
     }
 
-    map<U>(mapper: (value: T) => NonNullable<U>): Optional<NonNullable<U>> {
-        return Optional.ofNullable(mapper(this.payload));
+    map<U>(mapper: (value: T) => U): Optional<NonNullable<U>> {
+        let result : U = mapper(this.payload);
+        return Optional.ofNullable(result!);
     }
     
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
