@@ -76,7 +76,7 @@ export default abstract class Optional<T> {
      * 
      * @param mapper a mapper to apply the payload, if present
      */
-    abstract map<U> (mapper: (value: T) => U): Optional<U>;
+    abstract map<U> (mapper: (value: T) => U): Optional<NonNullable<U>>;
     
     /**
      * Maps a payload with a mapper which returns Optional as a result.
@@ -233,8 +233,9 @@ class PresentOptional<T> extends Optional<T> {
         return (predicate(this.payload)) ? this : Optional.empty();
     }
 
-    map<U>(mapper: (value: T) => U | null | undefined): Optional<U> {
-        return Optional.ofNullable(mapper(this.payload));
+    map<U>(mapper: (value: T) => U): Optional<NonNullable<U>> {
+        let result : U = mapper(this.payload);
+        return Optional.ofNullable(result!);
     }
     
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
@@ -298,7 +299,7 @@ class EmptyOptional<T> extends Optional<T> {
         return this;
     }
 
-    map<U>(mapper: (value: T) => U): Optional<U> {
+    map<U>(mapper: (value: T) => U): Optional<NonNullable<U>> {
         return Optional.empty();
     }
 
