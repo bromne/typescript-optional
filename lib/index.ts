@@ -1,4 +1,4 @@
-import { Option, Cases } from "./types";
+import { Cases, Option } from "./types";
 
 /**
  * `Optional` (like Java) implementation in TypeScript.
@@ -6,7 +6,8 @@ import { Option, Cases } from "./types";
  * `Optional<T>` is a type which *may* or *may not* contain a *payload* of type `T`.
  * It provides a common interface regardless of whether an instance is *present* or is *empty*. 
  *
- * This module is inspired by [Optional class in Java 8+](https://docs.oracle.com/javase/10/docs/api/java/util/Optional.html).
+ * This module is inspired by
+ * [Optional class in Java 8+](https://docs.oracle.com/javase/10/docs/api/java/util/Optional.html).
  * 
  * The following methods are currently not supported:
  * 
@@ -76,7 +77,7 @@ export default abstract class Optional<T> {
      * 
      * @param mapper a mapper to apply the payload, if present
      */
-    abstract map<U> (mapper: (value: T) => U): Optional<NonNullable<U>>;
+    abstract map<U>(mapper: (value: T) => U): Optional<NonNullable<U>>;
     
     /**
      * Maps a payload with a mapper which returns Optional as a result.
@@ -234,7 +235,7 @@ class PresentOptional<T> extends Optional<T> {
     }
 
     map<U>(mapper: (value: T) => U): Optional<NonNullable<U>> {
-        let result : U = mapper(this.payload);
+        const result: U = mapper(this.payload);
         return Optional.ofNullable(result!);
     }
     
