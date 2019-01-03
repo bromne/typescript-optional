@@ -14,13 +14,13 @@
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build-test",
+    "prepublish": "npm run test:build",
     "lint": "tslint lib/**/*.ts test/**/*.ts",
     "build": "tsc",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test",
     "coverage": "remap-istanbul -i coverage/coverage.json -o testResult/lcov.info -t lcovonly",
     "coveralls": "coveralls < testResult/lcov.info",
-    "build-test": "npm run build && npm run test && npm run coverage"
+    "test:build": "npm run build && npm run test && npm run coverage"
   },
   "author": "bromne",
   "license": "MIT",
