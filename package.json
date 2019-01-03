@@ -25,14 +25,14 @@
   "author": "bromne",
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^2.2.43",
-    "@types/power-assert": "^1.4.29",
-    "coveralls": "^3.0.0",
+    "@types/mocha": "^2.2.48",
+    "@types/power-assert": "^1.5.0",
+    "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
-    "power-assert": "^1.4.4",
-    "remap-istanbul": "^0.9.5",
+    "power-assert": "^1.6.1",
+    "remap-istanbul": "^0.9.6",
     "tslint": "^5.12.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.9.2"
   }
 }
