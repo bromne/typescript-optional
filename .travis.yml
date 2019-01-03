@@ -6,6 +6,7 @@ before_install:
 install:
 - "npm run build"
 script:
+- "npm run lint"
 - "npm run test"
 - "npm run coverage"
 after_success:
