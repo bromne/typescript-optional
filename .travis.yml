@@ -11,3 +11,9 @@ script:
   - npm run coverage
 after_success:
   - npm run coveralls
+deploy:
+  provider: npm
+  email: "bromne@gmail.com"
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
