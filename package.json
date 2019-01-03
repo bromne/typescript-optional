@@ -14,7 +14,6 @@
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
-    "prepublish": "npm run test:build",
     "lint": "tslint lib/**/*.ts test/**/*.ts",
     "build": "tsc",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test",
