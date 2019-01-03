@@ -18,7 +18,7 @@ export interface Cases<T, U> {
  * Objects of this type are provided by `Optional.toOption`
  * and they can be retrieved as `Optional` by `Optional.from`.
  */
-export type Option<T> = Present<T> | Empty<T>
+export type Option<T> = Present<T> | Empty<T>;
 
 export interface Present<T> {
     kind: "present";

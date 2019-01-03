@@ -1,0 +1,14 @@
+{
+    "extends": ["tslint:recommended"],
+    "rules": {
+        "arrow-parens": [true, "ban-single-arg-parens"],
+        "curly": false,
+        "interface-name": false,
+        "no-empty": [true, "allow-empty-functions"],
+        "no-trailing-whitespace": false,
+        "max-classes-per-file": false,
+        "member-access": false,
+        "member-ordering": false,
+        "object-literal-sort-keys": [true, "match-declaration-order"]
+    }
+}
