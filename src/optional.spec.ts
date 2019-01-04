@@ -381,13 +381,19 @@ describe("Optional", () => {
         });
     });
 
-    xdescribe("#toJSON", () => {
+    describe("#toJSON", () => {
         it("returns a value of payload itself when it is present.", () => {
-            
+            const sut = { foo: sutPresent };
+            const actual = JSON.parse(JSON.stringify(sut));
+            const expected = { foo: sutPresent.get() };
+            assert.deepStrictEqual(actual, expected);
         });
 
         it("returns null when it is empty.", () => {
-
+            const sut = { foo: sutEmpty };
+            const actual = JSON.parse(JSON.stringify(sut));
+            const expected = { foo: null };
+            assert.deepStrictEqual(actual, expected);
         });
     });
 });
