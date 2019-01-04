@@ -148,6 +148,16 @@ export abstract class Optional<T> {
     abstract matches<U>(cases: Cases<T, U>): U;
 
     /**
+     * This method is called by JSON.stringify automatically.
+     * When a payload is present, it will be serialized as the payload itself,
+     * otherwise, it will be serialized as `null`.
+     * 
+     * @param key property name
+     * @see https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON()_behavior
+     */
+    abstract toJSON(key: string): any;
+
+    /**
      * Returns an Optional whose payload is the given non-null `value`.
      * 
      * @param value a value 
@@ -274,6 +284,10 @@ class PresentOptional<T> extends Optional<T> {
     matches<U>(cases: Cases<T, U>): U {
         return cases.present(this.payload);
     }
+
+    toJSON(key: string): any {
+        return this.payload;
+    }
 }
 
 class EmptyOptional<T> extends Optional<T> {
@@ -338,5 +352,9 @@ class EmptyOptional<T> extends Optional<T> {
 
     matches<U>(cases: Cases<T, U>): U {
         return cases.empty();
+    }
+
+    toJSON(key: string): any {
+        return null;
     }
 }
