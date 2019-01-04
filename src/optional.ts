@@ -155,7 +155,7 @@ export abstract class Optional<T> {
      * @param key property name
      * @see https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON()_behavior
      */
-    abstract toJSON(key: string): any;
+    abstract toJSON(key: string): unknown;
 
     /**
      * Returns an Optional whose payload is the given non-null `value`.
@@ -285,7 +285,7 @@ class PresentOptional<T> extends Optional<T> {
         return cases.present(this.payload);
     }
 
-    toJSON(key: string): any {
+    toJSON(key: string): unknown {
         return this.payload;
     }
 }
@@ -354,7 +354,7 @@ class EmptyOptional<T> extends Optional<T> {
         return cases.empty();
     }
 
-    toJSON(key: string): any {
+    toJSON(key: string): unknown {
         return null;
     }
 }
