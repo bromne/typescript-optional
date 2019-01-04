@@ -17,8 +17,7 @@
     "lint": "tslint lib/**/*.ts test/**/*.ts",
     "build": "tsc",
     "test": "nyc mocha src/*",
-    "coverage": "remap-istanbul -i coverage/coverage.json -o testResult/lcov.info -t lcovonly",
-    "coveralls": "coveralls < testResult/lcov.info",
+    "coveralls": "coveralls < coverage/lcov.info",
     "test:coverage": "npm run test && npm run coverage"
   },
   "author": "bromne",
