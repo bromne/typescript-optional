@@ -33,7 +33,7 @@ npm install --save typescript-optional
 
 ```ts
 // import Optional type from this module
-import Optional from 'typescript-optional';
+import { Optional } from "typescript-optional";
 ```
 
 ### creating `Optional<T>` objects
