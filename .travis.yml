@@ -1,12 +1,17 @@
 language: node_js
 node_js:
-- "6"
+  - "8"
 before_install:
-- "npm install"
+  - npm install
 install:
-- "npm run build"
+  - npm run build
 script:
-- "npm run test"
-- "npm run coverage"
-after_success:
-- "npm run coveralls"
+  - npm run lint
+  - npm run test
+  - npm run coveralls
+deploy:
+  provider: npm
+  email: "bromne@gmail.com"
+  api_key: $NPM_TOKEN
+  on:
+    tags: true

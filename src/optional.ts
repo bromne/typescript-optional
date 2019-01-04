@@ -1,4 +1,4 @@
-import { Option, Cases } from "./types";
+import { Cases, Option } from "./types";
 
 /**
  * `Optional` (like Java) implementation in TypeScript.
@@ -6,7 +6,8 @@ import { Option, Cases } from "./types";
  * `Optional<T>` is a type which *may* or *may not* contain a *payload* of type `T`.
  * It provides a common interface regardless of whether an instance is *present* or is *empty*. 
  *
- * This module is inspired by [Optional class in Java 8+](https://docs.oracle.com/javase/10/docs/api/java/util/Optional.html).
+ * This module is inspired by
+ * [Optional class in Java 8+](https://docs.oracle.com/javase/10/docs/api/java/util/Optional.html).
  * 
  * The following methods are currently not supported:
  * 
@@ -15,7 +16,7 @@ import { Option, Cases } from "./types";
  * - `hashCode`
  * - `stream`
  */
-export default abstract class Optional<T> {
+export abstract class Optional<T> {
     /**
      * Represents whether this is present or not.
      * 
@@ -76,7 +77,7 @@ export default abstract class Optional<T> {
      * 
      * @param mapper a mapper to apply the payload, if present
      */
-    abstract map<U> (mapper: (value: T) => U): Optional<U>;
+    abstract map<U>(mapper: (value: T) => U): Optional<NonNullable<U>>;
     
     /**
      * Maps a payload with a mapper which returns Optional as a result.
@@ -145,6 +146,16 @@ export default abstract class Optional<T> {
      * @param cases cases for this `Optional`
      */
     abstract matches<U>(cases: Cases<T, U>): U;
+
+    /**
+     * This method is called by JSON.stringify automatically.
+     * When a payload is present, it will be serialized as the payload itself,
+     * otherwise, it will be serialized as `null`.
+     * 
+     * @param key property name
+     * @see https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON()_behavior
+     */
+    abstract toJSON(key: string): unknown;
 
     /**
      * Returns an Optional whose payload is the given non-null `value`.
@@ -233,8 +244,9 @@ class PresentOptional<T> extends Optional<T> {
         return (predicate(this.payload)) ? this : Optional.empty();
     }
 
-    map<U>(mapper: (value: T) => U | null | undefined): Optional<U> {
-        return Optional.ofNullable(mapper(this.payload));
+    map<U>(mapper: (value: T) => U): Optional<NonNullable<U>> {
+        const result: U = mapper(this.payload);
+        return Optional.ofNullable(result!);
     }
     
     flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U> {
@@ -272,6 +284,10 @@ class PresentOptional<T> extends Optional<T> {
     matches<U>(cases: Cases<T, U>): U {
         return cases.present(this.payload);
     }
+
+    toJSON(key: string): unknown {
+        return this.payload;
+    }
 }
 
 class EmptyOptional<T> extends Optional<T> {
@@ -298,7 +314,7 @@ class EmptyOptional<T> extends Optional<T> {
         return this;
     }
 
-    map<U>(mapper: (value: T) => U): Optional<U> {
+    map<U>(mapper: (value: T) => U): Optional<NonNullable<U>> {
         return Optional.empty();
     }
 
@@ -336,5 +352,9 @@ class EmptyOptional<T> extends Optional<T> {
 
     matches<U>(cases: Cases<T, U>): U {
         return cases.empty();
+    }
+
+    toJSON(key: string): unknown {
+        return null;
     }
 }
