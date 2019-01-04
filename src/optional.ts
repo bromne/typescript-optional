@@ -18,20 +18,20 @@ import { Cases, Option } from "./types";
  */
 export abstract class Optional<T> {
     /**
-     * Represents whether this is present or not.
+     * Returns whether this is present or not.
      * 
      * If a payload is present, be `true` , otherwise be `false`.
      */
-    abstract get isPresent(): boolean;
+    abstract isPresent(): boolean;
     
     /**
-     * Represents whether this is empty or not.
+     * Returns whether this is empty or not.
      * 
      * If this is empty, be `true`, otherwise  be `false`.
-     * This method is negation of `Optional.isPresent`.
+     * This method is negation of `Optional#isPresent`.
      */
-    get isEmpty(): boolean {
-        return !this.isPresent;
+    isEmpty(): boolean {
+        return !this.isPresent();
     }
 
     /**
@@ -219,7 +219,7 @@ export abstract class Optional<T> {
 class PresentOptional<T> extends Optional<T> {
     payload: T;
 
-    get isPresent(): boolean {
+    isPresent(): boolean {
         return true;
     }
     
@@ -291,7 +291,7 @@ class PresentOptional<T> extends Optional<T> {
 }
 
 class EmptyOptional<T> extends Optional<T> {
-    get isPresent(): boolean {
+    isPresent(): boolean {
         return false;
     }
 
