@@ -85,21 +85,21 @@ describe("Optional", () => {
 
     describe("#isPresent", () => {
         it("should return true if it is present", () => {
-            assert.strictEqual(sutPresent.isPresent, true);
+            assert.strictEqual(sutPresent.isPresent(), true);
         });
 
         it("should return false if it is not present", () => {
-            assert.strictEqual(sutEmpty.isPresent, false);
+            assert.strictEqual(sutEmpty.isPresent(), false);
         });
     });
 
     describe("#isEmpty", () => {
         it("should return false if it is present", () => {
-            assert.strictEqual(sutPresent.isEmpty, false);
+            assert.strictEqual(sutPresent.isEmpty(), false);
         });
 
         it("should return true if it is not present", () => {
-            assert.strictEqual(sutEmpty.isEmpty, true);
+            assert.strictEqual(sutEmpty.isEmpty(), true);
         });
     });
 
