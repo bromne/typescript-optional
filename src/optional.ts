@@ -16,7 +16,7 @@ import { Cases, Option } from "./types";
  * - `hashCode`
  * - `stream`
  */
-export default abstract class Optional<T> {
+export abstract class Optional<T> {
     /**
      * Represents whether this is present or not.
      * 
