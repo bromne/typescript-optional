@@ -368,16 +368,32 @@ describe("Optional", () => {
             empty: () => 0,
         };
 
-        it("returns a value converted from the payload by the given 'some' function when it is present", () => {
+        it("returns a value converted from the payload by the given 'present' function when it is present", () => {
             const actual = sutPresent.matches(cases);
             const expected = cases.present(payload);
             assert.strictEqual(actual, expected);
         });
 
-        it("returns the value returned by the given 'none' function when it is empty.", () => {
+        it("returns the value returned by the given 'empty' function when it is empty.", () => {
             const actual = sutEmpty.matches(cases);
             const expected = cases.empty();
             assert.strictEqual(actual, expected);
+        });
+    });
+
+    describe("#toJSON", () => {
+        it("returns a value of payload itself when it is present.", () => {
+            const sut = { foo: sutPresent };
+            const actual = JSON.parse(JSON.stringify(sut));
+            const expected = { foo: sutPresent.get() };
+            assert.deepStrictEqual(actual, expected);
+        });
+
+        it("returns null when it is empty.", () => {
+            const sut = { foo: sutEmpty };
+            const actual = JSON.parse(JSON.stringify(sut));
+            const expected = { foo: null };
+            assert.deepStrictEqual(actual, expected);
         });
     });
 });
