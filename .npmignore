@@ -6,8 +6,8 @@ testResult/
 dist/test/
 
 .gitignore
+.nyc_output
 .travis.yml
 *.log
-README.md
 tsconfig.json
-
+tslint.json
