@@ -1,7 +1,6 @@
 import "mocha";
 import * as assert from "power-assert";
-import Optional from "../lib";
-import { Cases, Option } from "../lib/types";
+import { Cases, Option, Optional } from "../lib";
 
 describe("Optional", () => {
     const payload: string = "foo";
