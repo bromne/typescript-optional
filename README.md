@@ -59,10 +59,10 @@ const optional: Optional<string> = Optional.ofNullable( /* some optional value: 
 optional.get();
 
 // represent whether this is present or not.
-optional.isPresent
+optional.isPresent();
 
 // represent whether this is empty or not. (negation of `isPresent` property)
-optional.isEmpty
+optional.isEmpty();
 
 // if a payload is present, execute the given `consumer`.
 optional.ifPresent(value => console.log(value));
