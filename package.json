@@ -1,6 +1,6 @@
 {
   "name": "typescript-optional",
-  "version": "2.0.0",
+  "version": "2.0.1-alpha",
   "description": "Optional (like Java) implementation in TypeScript",
   "keywords": [
     "java",
