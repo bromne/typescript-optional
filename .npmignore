@@ -1,13 +1,9 @@
-lib/
-test/
-node_modules/
-coverage/
-testResult/
-dist/test/
-
+*.log
+.git
 .gitignore
 .nyc_output
 .travis.yml
-*.log
+coverage
+src
 tsconfig.json
 tslint.json

@@ -1,6 +1,5 @@
+*.log
 .nyc_output
 node_modules
 coverage
-testResult
 dist
-*.log
