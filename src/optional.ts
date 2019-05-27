@@ -85,7 +85,7 @@ export abstract class Optional<T> {
      * If a payload is present, returns the result of applying the given `mapper` to the payload,
      * otherwise returns an empty `Optional`.
      * 
-     * @param mapper a mapper to app;y the payload, if present
+     * @param mapper a mapper to apply the payload, if present
      */
     abstract flatMap<U>(mapper: (value: T) => Optional<U>): Optional<U>;
 
