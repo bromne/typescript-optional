@@ -80,8 +80,8 @@ optional.map(value => value.length);
 // map a payload with the given mapper which returns value wrapped with Optional type.
 const powerIfPositive: (x: Number) => Optional<Number>
     = x => (x > 0) ? Optional.ofNonNull(x * x) : Optional.empty();
-const numberOptional: Optional<number> = Optional.ofNullable(/* some optional value: null | number */)
-numberOptional.flatMap(value => powerIfPositive(value));
+const numberOptional: Optional<null | number> = Optional.ofNullable(/* some optional value: null | number */)
+numberOptional.flatMap(value => powerIfPositive(value as number));
 
 // if this is present, return this, otherwise return the given another optional.
 const another: Optional<string> = Optional.ofNullable(/* ... */);
