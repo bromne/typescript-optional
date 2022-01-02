@@ -4,7 +4,6 @@
 name: Node.js Package
 
 on:
-  push: #
   release:
     types: [created]
 
