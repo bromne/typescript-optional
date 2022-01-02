@@ -19,7 +19,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
-      - run: npm run coveralls
+      # - run: npm run coveralls
       - uses: actions/upload-artifact@v2
         with:
           path: dist
