@@ -2,10 +2,10 @@
 
 .git
 .github
-.nyc_output
 coverage
 src
 
 .gitignore
+jest.config.js
 tsconfig.json
 tslint.json
