@@ -7,12 +7,15 @@
     "optional",
     "typescript"
   ],
+  "author": "bromne <bromne@gmail.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/bromne/typescript-optional.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "lint": "tslint lib/**/*.ts test/**/*.ts",
     "build": "tsc",
@@ -20,8 +23,6 @@
     "test:coverage": "jest --coverage",
     "codecov": "codecov"
   },
-  "author": "bromne <bromne@gmail.com>",
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "codecov": "^3.8.3",

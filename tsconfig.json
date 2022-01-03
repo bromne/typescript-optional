@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es5",
+    "target": "ES6",
+    "module": "ESNext",
+    "types": [],
     "outDir": "./dist/",
     "rootDirs": [
       "src",
@@ -9,9 +11,9 @@
     ],
     "sourceMap": true,
     "declaration": true,
-    "module": "commonjs",
     "removeComments": true,
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts"
