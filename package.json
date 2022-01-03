@@ -17,8 +17,8 @@
     "lint": "tslint lib/**/*.ts test/**/*.ts",
     "build": "tsc",
     "test": "jest",
-    "coveralls": "coveralls < coverage/lcov.info",
-    "test:coverage": "npm run test && npm run coverage"
+    "test:coverage": "jest --coverage",
+    "codecov": "codecov"
   },
   "author": "bromne",
   "license": "MIT",
@@ -26,6 +26,7 @@
     "@types/jest": "^27.4.0",
     "@types/mocha": "^2.2.48",
     "@types/power-assert": "^1.5.0",
+    "codecov": "^3.8.3",
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
     "jest": "^27.4.5",
@@ -37,23 +38,5 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.12.0",
     "typescript": "^3.2.2"
-  },
-  "nyc": {
-    "include": [
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "src/**/*.spec.ts"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "reporter": [
-      "lcov"
-    ],
-    "sourceMap": true
   }
 }
