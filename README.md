@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/typescript-optional.svg)](https://www.npmjs.com/package/typescript-optional)
 [![License](https://img.shields.io/npm/l/typescript-optional.svg)](https://www.npmjs.com/package/typescript-optional)
-[![Build Status](https://travis-ci.org/bromne/typescript-optional.svg?branch=develop)](https://travis-ci.org/bromne/typescript-optional)
+
 [![codecov](https://codecov.io/gh/bromne/typescript-optional/branch/master/graph/badge.svg?token=vwg9UEGoic)](https://codecov.io/gh/bromne/typescript-optional)
 
 Optional (like Java) implementation in TypeScript
