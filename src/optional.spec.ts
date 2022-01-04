@@ -1,5 +1,3 @@
-import "mocha";
-import * as assert from "power-assert";
 import { Cases, Option, Optional } from ".";
 
 describe("Optional", () => {
@@ -10,30 +8,30 @@ describe("Optional", () => {
     describe("#of", () => {
         it("should return a present Optional when it is given a non-null value.", () => {
             const sut = Optional.of("foo");
-            assert(sut.isPresent);
+            expect(sut.isPresent()).toBe(true);
         });
 
         it("should throw an exception when it is given null.", () => {
-            assert.throws(() => Optional.of<string | null>(null));
+            expect(() => Optional.of<string | null>(null)).toThrow();
         });
 
         it("should throw an exception when it is given undefined.", () => {
-            assert.throws(() => Optional.of<string | undefined>(undefined));
+            expect(() => Optional.of<string | undefined>(undefined)).toThrow();
         });
     });
 
     describe("#ofNonNull", () => {
         it("should return a present Optional when it is given a non-null value.", () => {
             const sut = Optional.ofNonNull("foo");
-            assert(sut.isPresent);
+            expect(sut.isPresent()).toBe(true);
         });
 
         it("should throw an exception when it is given null.", () => {
-            assert.throws(() => Optional.ofNonNull<string | null>(null));
+            expect(() => Optional.ofNonNull<string | null>(null)).toThrow();
         });
 
         it("should throw an exception when it is given undefined.", () => {
-            assert.throws(() => Optional.ofNonNull<string | undefined>(undefined));
+            expect(() => Optional.ofNonNull<string | undefined>(undefined)).toThrow();
         });
     });
 
@@ -43,17 +41,17 @@ describe("Optional", () => {
 
         it("should return a present Optional when it is given a non-null value.", () => {
             const sut = Optional.ofNullable("foo");
-            assert(sut.isPresent);
+            expect(sut.isPresent()).toBe(true);
         });
         
         it("should return an empty Optional when it receives null.", () => {
             const sut: Optional<string> = Optional.ofNullable(getNullable());
-            assert(sut.isEmpty);
+            expect(sut.isEmpty()).toBe(true);
         });
 
         it("should return an empty Optional when it receives undefined.", () => {
             const sut: Optional<string> = Optional.ofNullable(getUndefinedable());
-            assert(sut.isEmpty);
+            expect(sut.isEmpty()).toBe(true);
         });
     });
 
@@ -61,55 +59,55 @@ describe("Optional", () => {
         it("returns a present optional when it is given a present option.", () => {
             const presentOption: Option<string> = { kind: "present", value: payload };
             const sut = Optional.from(presentOption);
-            assert(sut.isPresent);
+            expect(sut.isPresent()).toBe(true);
         });
 
         it("returns an empty optional when it is given an empty option.", () => {
             const emptyOption: Option<string> = { kind: "empty" };
             const sut = Optional.from(emptyOption);
-            assert(sut.isEmpty);
+            expect(sut.isEmpty()).toBe(true);
         });
 
         it("throws an exception when it is given a value which is not Option type.", () => {
             const malformed: any = {};
-            assert.throws(() => Optional.from(malformed));
+            expect(() => Optional.from(malformed)).toThrow();
         });
     });
 
     describe("#empty", () => {
         it("should return an empty Optional.", () => {
             const sut: Optional<string> = Optional.empty();
-            assert(sut.isEmpty);
+            expect(sut.isEmpty()).toBe(true);
         });
     });
 
     describe("#isPresent", () => {
         it("should return true if it is present", () => {
-            assert.strictEqual(sutPresent.isPresent(), true);
+            expect(sutPresent.isPresent()).toBe(true);
         });
 
         it("should return false if it is not present", () => {
-            assert.strictEqual(sutEmpty.isPresent(), false);
+            expect(sutEmpty.isPresent()).toBe(false);
         });
     });
 
     describe("#isEmpty", () => {
         it("should return false if it is present", () => {
-            assert.strictEqual(sutPresent.isEmpty(), false);
+            expect(sutPresent.isEmpty()).toBe(false);
         });
 
         it("should return true if it is not present", () => {
-            assert.strictEqual(sutEmpty.isEmpty(), true);
+            expect(sutEmpty.isEmpty()).toBe(true);
         });
     });
 
     describe("#get", () => {
         it("should return the payload if it is present.", () => {
-            assert.strictEqual(sutPresent.get(), payload);
+            expect(sutPresent.get()).toBe(payload);
         });
 
         it("should throw an exception if it is empty.", () => {
-            assert.throws(() => sutEmpty.get());
+            expect(() => sutEmpty.get()).toThrow();
         });
     });
 
@@ -117,10 +115,10 @@ describe("Optional", () => {
         it("should call the given function if it is present.", () => {
             let called = false;
             sutPresent.ifPresent(value => {
-                assert.strictEqual(value, payload);
+                expect(value).toBe(payload);
                 called = true;
             });
-            assert.strictEqual(called, true);
+            expect(called).toBe(true);
         });
 
         it("should not call the given function if it is empty.", () => {
@@ -128,7 +126,7 @@ describe("Optional", () => {
             sutEmpty.ifPresent(value => {
                 called = true;
             });
-            assert.strictEqual(called, false);
+            expect(called).toBe(false);
         });
     });
 
@@ -137,13 +135,13 @@ describe("Optional", () => {
             let called = false;
             let calledEmpty = false;
             sutPresent.ifPresentOrElse(value => {
-                assert.strictEqual(value, payload);
+                expect(value).toBe(payload);
                 called = true;
             }, () => {
                 calledEmpty = true;
             });
-            assert.strictEqual(called, true);
-            assert.strictEqual(calledEmpty, false);
+            expect(called).toBe(true);
+            expect(calledEmpty).toBe(false);
         });
 
         it("should call the emptyAction function if it is empty.", () => {
@@ -154,25 +152,25 @@ describe("Optional", () => {
             }, () => {
                 calledEmpty = true;
             });
-            assert.strictEqual(called, false);
-            assert.strictEqual(calledEmpty, true);
+            expect(called).toBe(false);
+            expect(calledEmpty).toBe(true);
         });
     });
 
     describe("#filter", () => {
         it("should return a present Optional if it is present and the predicate should return true.", () => {
             const actual = sutPresent.filter(value => value.length > 0);
-            assert.strictEqual(actual.get(), payload);
+            expect(actual.get()).toBe(payload);
         });
 
         it("should return an empty Optional if it is present and the predicate should return false.", () => {
             const actual = sutPresent.filter(value => value.length === 0);
-            assert(actual.isEmpty);
+            expect(actual.isEmpty()).toBe(true);
         });
 
         it("should return an empty Optional if it is empty.", () => {
             const actual = sutEmpty.filter(value => true);
-            assert(actual.isEmpty);
+            expect(actual.isEmpty()).toBe(true);
         });
     });
 
@@ -183,12 +181,12 @@ describe("Optional", () => {
                 + "if it is present and the result is not null.", () => {
             const actual = sutPresent.map(mapper).get();
             const expected = mapper(payload);
-            assert.strictEqual(actual, expected);
+            expect(actual).toBe(expected);
         });
 
         it("should return an empty Optional if it is empty.", () => {
             const actual = sutEmpty.map(mapper);
-            assert(actual.isEmpty);
+            expect(actual.isEmpty()).toBe(true);
         });
 
         it("should handle null/undefined mapper return value properly", () => {
@@ -199,11 +197,11 @@ describe("Optional", () => {
             const p: Payload = {
                 a: "A",
             };
-            assert.strictEqual(p.a, Optional.ofNonNull(p).map(x => x.a).get());
+            expect(p.a).toBe(Optional.ofNonNull(p).map(x => x.a).get());
 
             const fallback = "B";
-            assert.strictEqual(fallback, Optional.ofNonNull(p as any).map(x => x.b).orElse(fallback));
-            assert.strictEqual(fallback, Optional.ofNonNull(p).map(x => null as any).orElse(fallback));
+            expect(fallback).toBe(Optional.ofNonNull(p as any).map(x => x.b).orElse(fallback));
+            expect(fallback).toBe(Optional.ofNonNull(p).map(x => null as any).orElse(fallback));
 
             const m: (x: boolean) => undefined | Payload = (isNull: boolean) => isNull ? undefined : p;
 
@@ -211,9 +209,9 @@ describe("Optional", () => {
                 a: "B",
             };
 
-            assert.strictEqual(fallbackPayload,
-                Optional.ofNonNull(p).map(x => m(true)).orElse(fallbackPayload));
-            assert.strictEqual(p.a, Optional.ofNonNull(p).map(x => m(false)).map(x => x.a).get());
+            expect(fallbackPayload)
+                .toBe(Optional.ofNonNull(p).map(x => m(true)).orElse(fallbackPayload));
+            expect(p.a).toBe(Optional.ofNonNull(p).map(x => m(false)).map(x => x.a).get());
         });
     });
 
@@ -231,7 +229,7 @@ describe("Optional", () => {
                 const nonNegative = 16;
                 const sut = Optional.ofNonNull(nonNegative);
                 const actual = sut.flatMap(sqrtIfNonNegative);
-                assert.strictEqual(actual.get(), Math.sqrt(nonNegative));
+                expect(actual.get()).toBe(Math.sqrt(nonNegative));
             });
 
             it("should return the empty Optional which is mapped by the given function "
@@ -239,13 +237,13 @@ describe("Optional", () => {
                 const negative = -16;
                 const sut = Optional.ofNonNull(negative);
                 const actual = sut.flatMap(sqrtIfNonNegative);
-                assert(actual.isEmpty);
+                expect(actual.isEmpty()).toBe(true);
             });
             
             it("should return the empty Optional if it is empty.", () => {
                 const sut = Optional.empty<number>();
                 const actual = sut.flatMap(sqrtIfNonNegative);
-                assert(actual.isEmpty);
+                expect(actual.isEmpty()).toBe(true);
             });
         }
         {
@@ -257,17 +255,17 @@ describe("Optional", () => {
             // tslint:disable-next-line:max-line-length
             it("should return value of applying bi-function to two payloads if both of the two Optionals are present.", () => {
                 const actual = left.flatMap(x => right.map(y => x + y));
-                assert.strictEqual(actual.get(), sum);
+                expect(actual.get()).toBe(sum);
             });
     
             it("should return empty Optional if the left is present and the right is empty.", () => {
                 const actual = left.flatMap(x => empty.map(y => x + y));
-                assert(actual.isEmpty);
+                expect(actual.isEmpty()).toBe(true);
             });
     
             it("should return empty Optional if the left is empty and the right is present.", () => {
                 const actual = empty.flatMap(x => right.map(y => x + y));
-                assert(actual.isEmpty);
+                expect(actual.isEmpty()).toBe(true);
             });
         }
     });
@@ -278,12 +276,12 @@ describe("Optional", () => {
 
         it("should return the current Optional if it is present.", () => {
             const actual = sutPresent.or(supplier);
-            assert(actual === sutPresent);
+            expect(actual === sutPresent).toBe(true);
         });
 
         it("should return the supplier's value if it is empty.", () => {
             const actual = sutEmpty.or(supplier);
-            assert.strictEqual(actual.get(), another);
+            expect(actual.get()).toBe(another);
         });
     });
 
@@ -292,12 +290,12 @@ describe("Optional", () => {
 
         it("should return the original payload if it is present.", () => {
             const actual = sutPresent.orElse(another);
-            assert.strictEqual(actual, sutPresent.get());
+            expect(actual).toBe(sutPresent.get());
         });
 
         it("should return the given value if it is empty.", () => {
             const actual = sutEmpty.orElse(another);
-            assert.strictEqual(actual, another);
+            expect(actual).toBe(another);
         });
     });
 
@@ -306,59 +304,59 @@ describe("Optional", () => {
 
         it("should return the original payload if it is present.", () => {
             const actual = sutPresent.orElseGet(() => another);
-            assert.strictEqual(actual, sutPresent.get());
+            expect(actual).toBe(sutPresent.get());
         });
 
         it("should return the value returned by the given function if it is empty.", () => {
             const actual = sutEmpty.orElseGet(() => another);
-            assert.strictEqual(actual, another);
+            expect(actual).toBe(another);
         });
     });
 
     describe("#orElseThrow", () => {
         it("should return the original payload if it is present.", () => {
             const actual = sutPresent.orElseThrow(TypeError);
-            assert.strictEqual(actual, sutPresent.get());
+            expect(actual).toBe(sutPresent.get());
         });
 
         it("should throw the exception returned by the given function if it is empty.", () => {
-            assert.throws(() => sutEmpty.orElseThrow(TypeError));
+            expect(() => sutEmpty.orElseThrow(TypeError)).toThrow();
         });
     });
 
     describe("#orNull", () => {
         it("returns the original payload when it is present.", () => {
             const actual = sutPresent.orNull();
-            assert.strictEqual(actual, sutPresent.get());
+            expect(actual).toBe(sutPresent.get());
         });
 
         it("returns null when it is empty.", () => {
             const actual = sutEmpty.orNull();
-            assert.strictEqual(actual, null);
+            expect(actual).toBe(null);
         }); 
     });
 
     describe("#orUndefined", () => {
         it("returns the original payload when it is present.", () => {
             const actual = sutPresent.orUndefined();
-            assert.strictEqual(actual, sutPresent.get());
+            expect(actual).toBe(sutPresent.get());
         });
 
         it("returns null when it is empty.", () => {
             const actual = sutEmpty.orUndefined();
-            assert.strictEqual(actual, undefined);
+            expect(actual).toBe(undefined);
         }); 
     });
 
     describe("#toOption", () => {
         it("returns a Some value when it is present.", () => {
             const actual = sutPresent.toOption();
-            assert.equal(actual.kind, "present");
+            expect(actual.kind).toBe("present");
         });
 
         it("returns a None value when it is empty.", () => {
             const actual = sutEmpty.toOption();
-            assert.equal(actual.kind, "empty");
+            expect(actual.kind).toBe("empty");
         });
     });
 
@@ -371,13 +369,13 @@ describe("Optional", () => {
         it("returns a value converted from the payload by the given 'present' function when it is present", () => {
             const actual = sutPresent.matches(cases);
             const expected = cases.present(payload);
-            assert.strictEqual(actual, expected);
+            expect(actual).toBe(expected);
         });
 
         it("returns the value returned by the given 'empty' function when it is empty.", () => {
             const actual = sutEmpty.matches(cases);
             const expected = cases.empty();
-            assert.strictEqual(actual, expected);
+            expect(actual).toBe(expected);
         });
     });
 
@@ -386,14 +384,14 @@ describe("Optional", () => {
             const sut = { foo: sutPresent };
             const actual = JSON.parse(JSON.stringify(sut));
             const expected = { foo: sutPresent.get() };
-            assert.deepStrictEqual(actual, expected);
+            expect(actual).toStrictEqual(expected);
         });
 
         it("returns null when it is empty.", () => {
             const sut = { foo: sutEmpty };
             const actual = JSON.parse(JSON.stringify(sut));
             const expected = { foo: null };
-            assert.deepStrictEqual(actual, expected);
+            expect(actual).toStrictEqual(expected);
         });
     });
 });

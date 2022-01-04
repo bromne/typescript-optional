@@ -1,9 +1,11 @@
 *.log
+
 .git
-.gitignore
-.nyc_output
-.travis.yml
+.github
 coverage
 src
+
+.gitignore
+jest.config.js
 tsconfig.json
 tslint.json
