@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "target": "ES6",
     "module": "ESNext",
-    "outDir": "./dist/",
+    "outDir": "dist/esm/",
     "rootDirs": [
       "src",
       "test"

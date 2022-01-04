@@ -1,2 +1,2 @@
-export { Optional } from "./optional";
+export { Optional } from "./optional.js";
 export { Cases, Empty, Option, Present } from "./types";

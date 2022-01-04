@@ -13,12 +13,16 @@
     "type": "git",
     "url": "https://github.com/bromne/typescript-optional.git"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "lint": "tslint lib/**/*.ts test/**/*.ts",
-    "build": "tsc",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "codecov": "codecov"
