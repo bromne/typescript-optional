@@ -21,7 +21,7 @@
     "lint": "tslint lib/**/*.ts test/**/*.ts",
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs/",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "codecov": "codecov"
