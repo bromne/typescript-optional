@@ -10,7 +10,6 @@
     "sourceMap": true,
     "declaration": true,
     "module": "commonjs",
-    "removeComments": true,
     "strict": true
   },
   "include": [
