@@ -216,7 +216,7 @@ export abstract class Optional<T> {
     }
 }
 
-class PresentOptional<T> extends Optional<T> {
+export class PresentOptional<T> extends Optional<T> {
     payload: T;
 
     isPresent(): boolean {
@@ -290,7 +290,7 @@ class PresentOptional<T> extends Optional<T> {
     }
 }
 
-class EmptyOptional<T> extends Optional<T> {
+export class EmptyOptional<T> extends Optional<T> {
     isPresent(): boolean {
         return false;
     }
