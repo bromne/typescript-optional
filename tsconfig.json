@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "ES6",
+    "target": "ES2019",
     "module": "ESNext",
     "outDir": "dist/esm/",
     "rootDirs": [
@@ -21,7 +21,6 @@
   "exclude": [
     "dist",
     "node_modules",
-    "src/**/*.spec.ts",
-    "testResult"
+    "src/**/*.spec.ts"
   ]
 }
