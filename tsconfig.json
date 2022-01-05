@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es5",
-    "outDir": "./dist/",
+    "target": "ES2019",
+    "module": "ESNext",
+    "outDir": "dist/esm/",
     "rootDirs": [
       "src",
       "test"
     ],
     "sourceMap": true,
     "declaration": true,
-    "module": "commonjs",
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts"
@@ -18,7 +20,6 @@
   "exclude": [
     "dist",
     "node_modules",
-    "src/**/*.spec.ts",
-    "testResult"
+    "src/**/*.spec.ts"
   ]
 }
