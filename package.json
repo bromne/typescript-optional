@@ -1,33 +1,40 @@
 {
   "name": "typescript-optional",
-  "version": "2.0.2-alpha.2",
+  "version": "3.0.0-alpha.1",
   "description": "Optional (like Java) implementation in TypeScript",
   "keywords": [
     "java",
     "optional",
     "typescript"
   ],
+  "author": "bromne <bromne@gmail.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/bromne/typescript-optional.git"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "lint": "tslint lib/**/*.ts test/**/*.ts",
-    "build": "tsc",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs/",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "codecov": "codecov"
   },
-  "author": "bromne <bromne@gmail.com>",
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "codecov": "^3.8.3",
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
     "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.9.10"
+  },
+  "jest": {
+    "preset": "ts-jest"
   }
 }

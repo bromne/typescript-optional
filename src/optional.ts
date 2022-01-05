@@ -1,4 +1,4 @@
-import { Cases, Option } from "./types";
+import { Cases, Option } from "./types.js";
 
 /**
  * `Optional` (like Java) implementation in TypeScript.

@@ -1,4 +1,5 @@
-import { Cases, Option, Optional } from ".";
+import { Optional } from "./optional";
+import { Cases, Option } from "./types";
 
 describe("Optional", () => {
     const payload: string = "foo";
