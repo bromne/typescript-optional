@@ -161,7 +161,7 @@ const optionalFromOrUndefined: Optional<string> = Optional.ofNullble(orUndefined
 
 As a more explicit way to obtain prototype-free objects, `Optional.toOption` is provided.
 This method convert an `Optional<T>` into an object of `Option<T>` type, which conforms to [*discriminated unions*](http://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions) also known as *algebraic data types*.
-Refer the [API document](lib/types.ts) of `Option<T>` to learn about the structure.
+Refer the [API document](src/types.ts) of `Option<T>` to learn about the structure.
 
 ```ts
 const update: <T> (original: Option<T>) => T = /* some external function that returns without the prototype */
